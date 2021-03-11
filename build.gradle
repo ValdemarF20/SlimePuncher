@@ -1,0 +1,59 @@
+
+
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main' //instead of src/main/java
+        }
+        resources {
+            srcDir 'resources' //instead of src/main/resources
+        }
+    }
+
+    test {
+        java {
+            srcDir 'src/test' //instead of src/test/java
+        }
+
+        resources {
+            srcDir 'resources' //instead of src/test/resources
+
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    testImplementation 'junit:junit:4.11'
+}
+
+tasks.register("build_connor", Copy) {
+    dependsOn tasks.build
+
+        //from "build/libs/SlimePuncher-0.0.0-ALPHA.jar"
+        from jar.archiveFile
+        //into "$projectDir"
+        into "/home/connor/Documents/TestMinecraftServer_12.2/plugins"
+}
+
+tasks.register("build_vald", Copy) {
+    dependsOn tasks.build
+
+        from jar.archiveFile
+        into ""
+}
+
+group = 'net.arcticforestmc.SlimePuncher'
+version = '0.0.0-ALPHA-SNAPSHOT'
+sourceCompatibility = 1.8
