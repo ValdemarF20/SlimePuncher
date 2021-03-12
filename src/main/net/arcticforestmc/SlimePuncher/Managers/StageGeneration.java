@@ -6,7 +6,7 @@ public class StageGeneration {
 
 
     /** 
-     * 
+     * Generate stage 
      */
     public void generateStage(GamePlayer player, String stagePath) {
 
