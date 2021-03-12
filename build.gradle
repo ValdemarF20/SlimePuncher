@@ -51,7 +51,7 @@ tasks.register("build_vald", Copy) {
     dependsOn tasks.build
 
         from jar.archiveFile
-        into ""
+        into "C:\\Users\\Valdemar\\Desktop\\mc\\Testing Server\\plugins"
 }
 
 group = 'net.arcticforestmc.SlimePuncher'
