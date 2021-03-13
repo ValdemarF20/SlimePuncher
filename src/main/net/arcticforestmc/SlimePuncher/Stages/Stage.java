@@ -14,18 +14,53 @@ public abstract class Stage {
     public abstract int[] getStageIdentifier();
 
     /**
-     * Add a child to the current tree node, 
+     * This method defines the children of this stage, used to contruct a tree. Here you will put the identifiers of the stages you want this stage to lead to when done. An empty list would mean this is the end of the road, last stage.
+     * @param child
      */
-    public void addChild(Stage child) {
+    public abstract int[][] getChildrenDescriptor();
+
+    /**
+     * Add a child Object to the current tree node, 
+     * @param child
+     */
+    public void addChildObject(Stage child) {
         children.add(child);
     }
 
     /** 
      * Get the children nodes of this stage.
      * @param childIndex which index to get, aka which "path" to get.
+     * @return child
      */
-    public Stage getChild(int childIndex) {
-        return(children.get(childIndex));
+    public Stage getChildObject(int childIndex) {
+        if(children.size()-1<=childIndex) {
+            return(children.get(childIndex));
+        }
+        else {
+            //no child object provided.
+            return(null);
+        }
     }
+
+
+    /**
+     * Get all children objects
+     * @return children
+     */
+    public ArrayList<Stage> getChildrenObjects() {
+        return(children);
+    }
+
+    /**
+     * Should this stage have any children(if no its the end - its the leaf of the tree)
+     * @return if should have children
+     */
+    public boolean hasChildren() {
+        if(getChildrenDescriptor().length>0) {
+            return(true);
+        }
+        return(false);
+    }
+
     
 }

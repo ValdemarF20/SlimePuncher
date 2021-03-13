@@ -4,8 +4,12 @@ public class Stage0_0_SlimePunching extends Stage {
 
     @Override
     public int[] getStageIdentifier() {
-        int identifier[] = {0,0};
-        return(identifier);
+        return(new int[]{0,0});
+    }
+
+    @Override
+    public int[][] getChildrenDescriptor() {
+        return(new int[][]{{1,0}});
     }
     
 }

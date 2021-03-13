@@ -35,7 +35,7 @@ sourceSets {
 
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
-    testImplementation 'junit:junit:4.11'
+    testImplementation 'junit:junit:4.12'
 }
 
 tasks.register("build_connor", Copy) {
@@ -57,3 +57,13 @@ tasks.register("build_vald", Copy) {
 group = 'net.arcticforestmc.SlimePuncher'
 version = '0.0.0-ALPHA-SNAPSHOT'
 sourceCompatibility = 1.8
+
+configure(build_connor) {   
+    group = 'SlimePuncher'
+    description = 'Build and export jar'
+}
+
+configure(build_vald) {   
+    group = 'SlimePuncher'
+    description = 'Build and export jar'
+}

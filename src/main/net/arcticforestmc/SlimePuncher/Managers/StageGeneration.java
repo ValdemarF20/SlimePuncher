@@ -8,7 +8,7 @@ public class StageGeneration {
     /** 
      * Generate next stage from schematic.
      */
-    public void generateStage(GamePlayer player, String stagePath) {
+    public void generateStage(GamePlayer player, String stageIdentifier) {
 
     }
     
