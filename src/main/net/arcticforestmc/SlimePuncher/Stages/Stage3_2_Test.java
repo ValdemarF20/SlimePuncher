@@ -1,6 +1,13 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
+import net.arcticforestmc.SlimePuncher.SlimePuncher;
+
 public class Stage3_2_Test extends Stage {
+
+    protected Stage3_2_Test(SlimePuncher slimePuncher) {
+        super(slimePuncher);
+        //TODO Auto-generated constructor stub
+    }
 
     @Override
     public int[] getStageIdentifier() {
