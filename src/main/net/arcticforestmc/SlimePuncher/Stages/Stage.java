@@ -33,7 +33,7 @@ public abstract class Stage {
      * @return child
      */
     public Stage getChildObject(int childIndex) {
-        if(children.size()-1<=childIndex) {
+        if(children.size()-1>=childIndex) {
             return(children.get(childIndex));
         }
         else {
@@ -61,6 +61,11 @@ public abstract class Stage {
         }
         return(false);
     }
+
+    /**
+     * When owner joins island(for example he gets online)
+     */
+    public abstract void ownerJoinedIsland();
 
     
 }

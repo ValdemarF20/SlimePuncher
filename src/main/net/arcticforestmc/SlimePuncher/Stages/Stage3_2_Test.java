@@ -1,15 +1,15 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
-public class Stage2_0_Test extends Stage {
+public class Stage3_2_Test extends Stage {
 
     @Override
     public int[] getStageIdentifier() {
-        return(new int[]{2,0});
+        return(new int[]{3,2});
     }
 
     @Override
     public int[][] getChildrenDescriptor() {
-        return(new int[][]{{3,0}});
+        return(new int[][]{{4,0}});
     }
 
     @Override

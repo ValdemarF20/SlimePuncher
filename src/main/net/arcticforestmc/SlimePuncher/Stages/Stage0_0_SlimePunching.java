@@ -11,5 +11,11 @@ public class Stage0_0_SlimePunching extends Stage {
     public int[][] getChildrenDescriptor() {
         return(new int[][]{{1,0}});
     }
+
+    @Override
+    public void ownerJoinedIsland() {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

@@ -9,7 +9,13 @@ public class Stage2_1_Test extends Stage {
 
     @Override
     public int[][] getChildrenDescriptor() {
-        return(new int[][]{{3,0}});
+        return(new int[][]{{3,1},{3,2}});
+    }
+
+    @Override
+    public void ownerJoinedIsland() {
+        // TODO Auto-generated method stub
+        
     }
     
 }

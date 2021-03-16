@@ -10,7 +10,7 @@ import net.arcticforestmc.SlimePuncher.Base.StageTree;
 public class StageTreeTest {
 
     @Test
-    public void checkOrdered() {
+    public void checkTree() {
         StageTree tree = new StageTree();
         System.out.println(tree.generateDebugTreeGraph());
     }
