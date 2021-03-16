@@ -2,6 +2,8 @@ package net.arcticforestmc.SlimePuncher.Base;
 
 import org.bukkit.entity.Player;
 
+import net.arcticforestmc.SlimePuncher.SlimePuncher;
+
 
 public class GamePlayer {
 
@@ -9,18 +11,21 @@ public class GamePlayer {
     private int bits;               //How many bits does the player have
     private int level;              //what level is the player on
     private StageTree stageTree;    //This players stageTree
+    Player owner;
    
     /**
      * Keeps track of a player and their corresponding data
      * @param player
      */
-    public GamePlayer(Player player) {
+    public GamePlayer(Player player, SlimePuncher plugin) {
+        owner = player;
+        
         //Check if this player has played the game before
         if(playedBefore(player)) {
 
         }
         else {
-            stageTree = new StageTree();
+            stageTree = new StageTree(plugin, owner);
         }
 
     }

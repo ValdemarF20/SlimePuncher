@@ -2,19 +2,23 @@ package net.arcticforestmc.SlimePuncher.Stages;
 
 import java.util.ArrayList;
 
+import org.bukkit.entity.Player;
+
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 
 public abstract class Stage {
 
     protected ArrayList<Stage> children = new ArrayList<>();
     protected SlimePuncher plugin;
+    protected Player owner;
 
     /**
      * Construct object
      * @return
      */
-    protected Stage(SlimePuncher slimePuncher) {
+    protected Stage(SlimePuncher slimePuncher, Player player) {
         plugin = slimePuncher;
+        this.owner = player;
     }
     
     

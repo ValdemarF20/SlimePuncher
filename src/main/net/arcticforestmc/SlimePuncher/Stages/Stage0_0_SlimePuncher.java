@@ -1,11 +1,13 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
+import org.bukkit.entity.Player;
+
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 
 public class Stage0_0_SlimePuncher extends Stage {
 
-    protected Stage0_0_SlimePuncher(SlimePuncher slimePuncher) {
-        super(slimePuncher);
+    public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, Player owner) {
+        super(slimePuncher, owner);
         //TODO Auto-generated constructor stub
     }
 

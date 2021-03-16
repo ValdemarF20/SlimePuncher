@@ -6,6 +6,7 @@ plugins {
 
 repositories {
     mavenLocal()
+    jcenter()
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
@@ -36,6 +37,7 @@ sourceSets {
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:3.8.0'
 }
 
 tasks.register("build_connor", Copy) {

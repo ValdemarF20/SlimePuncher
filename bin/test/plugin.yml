@@ -1,4 +1,6 @@
 main: net.arcticforestmc.SlimePuncher.SlimePuncher
 name: "SlimePuncher"
 version: 0.0.0-ALPHA
-authors: ["", ""]
+authors: ["Connor Michalec", ""]
+commands:
+  testdingdong:

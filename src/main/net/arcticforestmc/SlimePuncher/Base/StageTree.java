@@ -3,6 +3,9 @@ package net.arcticforestmc.SlimePuncher.Base;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.bukkit.entity.Player;
+
+import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Stages.*;
 
 
@@ -18,20 +21,20 @@ public class StageTree {
      * Construct stage tree
      *  
      **/ 
-    public StageTree() {
-        root = new Stage0_0_SlimePuncher();
+    public StageTree(SlimePuncher plugin, Player owner) {
+        root = new Stage0_0_SlimePuncher(plugin, owner);
 
         //NOTE: Order doesnt matter here. Make sure there is a leaf/end game without any children.
         stages = new Stage[]{
             root,
-            new Stage1_0_Test(),
-            new Stage2_0_Test(),
-            new Stage2_1_Test(),
-            new Stage3_0_Test(),
-            new Stage3_1_Test(),
-            new Stage3_2_Test(),
-            new Stage4_0_Test(),
-            new Stage5_0_Test()};
+            new Stage1_0_Test(plugin, owner),
+            new Stage2_0_Test(plugin, owner),
+            new Stage2_1_Test(plugin, owner),
+            new Stage3_0_Test(plugin, owner),
+            new Stage3_1_Test(plugin, owner),
+            new Stage3_2_Test(plugin, owner),
+            new Stage4_0_Test(plugin, owner),
+            new Stage5_0_Test(plugin, owner)};
 
 
         //CONSTRUCT TREE
