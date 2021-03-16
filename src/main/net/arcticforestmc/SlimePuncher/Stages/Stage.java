@@ -2,9 +2,20 @@ package net.arcticforestmc.SlimePuncher.Stages;
 
 import java.util.ArrayList;
 
+import net.arcticforestmc.SlimePuncher.SlimePuncher;
+
 public abstract class Stage {
 
-    private ArrayList<Stage> children = new ArrayList<>();
+    protected ArrayList<Stage> children = new ArrayList<>();
+    protected SlimePuncher plugin;
+
+    /**
+     * Construct object
+     * @return
+     */
+    protected Stage(SlimePuncher slimePuncher) {
+        plugin = slimePuncher;
+    }
     
     
     /**
