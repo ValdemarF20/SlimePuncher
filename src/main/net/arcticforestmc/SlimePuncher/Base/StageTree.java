@@ -8,7 +8,7 @@ import net.arcticforestmc.SlimePuncher.Stages.*;
 
 public class StageTree {      
 
-    private Stage0_0_SlimePunching root;                                    //ROOT of tree(first stage)
+    private Stage0_0_SlimePuncher root;                                    //ROOT of tree(first stage)
 
     private Stage trackingStage;                                            //This is the stage the player is currently on 
    
@@ -19,7 +19,7 @@ public class StageTree {
      *  
      **/ 
     public StageTree() {
-        root = new Stage0_0_SlimePunching();
+        root = new Stage0_0_SlimePuncher();
 
         //NOTE: Order doesnt matter here. Make sure there is a leaf/end game without any children.
         stages = new Stage[]{
@@ -56,13 +56,6 @@ public class StageTree {
 
         trackingStage = root;
 
-    }
-
-    private boolean stagesAreSameLevel(Stage a, Stage b) {
-        if(a.getStageIdentifier()[0] == b.getStageIdentifier()[0]) {
-            return(true);
-        }
-        return(false);
     }
 
     /**
@@ -166,15 +159,20 @@ public class StageTree {
         return(amount);
     }
 
+    //Ignore:
+    /*
     private String il(int i[])  {       //identifier label
         int stage = i[0];
         int index = i[1];
 
         return(stage+"_"+index);
     }
-
-    //Ignore:
-    /*
+        private boolean stagesAreSameLevel(Stage a, Stage b) {
+        if(a.getStageIdentifier()[0] == b.getStageIdentifier()[0]) {
+            return(true);
+        }
+        return(false);
+    }
     private ArrayList<Stage> stageParents(Stage stage, ArrayList<ArrayList<Stage>> levels) {
         ArrayList<Stage> parents = new ArrayList<>();
         for(ArrayList<Stage> level : levels) {

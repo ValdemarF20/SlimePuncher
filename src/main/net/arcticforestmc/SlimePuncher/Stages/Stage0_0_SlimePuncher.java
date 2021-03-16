@@ -1,6 +1,6 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
-public class Stage0_0_SlimePunching extends Stage {
+public class Stage0_0_SlimePuncher extends Stage {
 
     @Override
     public int[] getStageIdentifier() {
