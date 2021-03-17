@@ -74,7 +74,7 @@ public class StageTree {
         ArrayList<Stage> alreadyBranched = new ArrayList<>();
 
         //Go down tree
-        graph = "[ROOT->"+branch(base, alreadyBranched);
+        graph = "\n[ROOT->"+branch(base, alreadyBranched);
 
         return(graph);
 

@@ -11,6 +11,8 @@ public class Stage0_0_SlimePuncher extends Stage {
         //TODO Auto-generated constructor stub
     }
 
+    
+
     @Override
     public int[] getStageIdentifier() {
         return(new int[]{0,0});
