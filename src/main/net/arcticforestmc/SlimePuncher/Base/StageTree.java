@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import org.bukkit.event.Listener;
 
-import Listeners.StageTreeListener;
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Stages.*;
 
@@ -16,7 +15,7 @@ public class StageTree implements Listener{
 
     private Stage trackingStage;                                            //This is the stage the player is currently on 
    
-    private Stage stages[];
+    protected ArrayList<Stage> stages;
 
     private GamePlayer owner;
 
@@ -29,7 +28,7 @@ public class StageTree implements Listener{
         
 
         //NOTE: Order doesnt matter here. Make sure there is a leaf/end game without any children.
-        stages = new Stage[]{
+        stages = (ArrayList<Stage>) Arrays.asList(new Stage[] {
             root,
             new Stage1_0_Test(plugin, owner),
             new Stage2_0_Test(plugin, owner),
@@ -38,7 +37,7 @@ public class StageTree implements Listener{
             new Stage3_1_Test(plugin, owner),
             new Stage3_2_Test(plugin, owner),
             new Stage4_0_Test(plugin, owner),
-            new Stage5_0_Test(plugin, owner)};
+            new Stage5_0_Test(plugin, owner)});
 
 
         //CONSTRUCT TREE

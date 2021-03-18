@@ -1,6 +1,7 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
@@ -31,13 +32,11 @@ public class Stage0_0_SlimePuncher extends Stage {
         // TODO Auto-generated method stub
         
     }
-    /* Pass the event to this method
+
 
     @Override
-    public void onInteract(event e){
+    public void onInteractEvent(PlayerInteractEvent e){
         
     }
-    
-    */
     
 }

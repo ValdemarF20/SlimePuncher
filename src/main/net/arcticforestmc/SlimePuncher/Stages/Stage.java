@@ -2,6 +2,8 @@ package net.arcticforestmc.SlimePuncher.Stages;
 
 import java.util.ArrayList;
 
+import org.bukkit.event.player.PlayerInteractEvent;
+
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 
@@ -81,5 +83,11 @@ public abstract class Stage {
      */
     public abstract void ownerJoinedIsland();
 
+
+    //EVENTS:
+
+    public void onInteractEvent(PlayerInteractEvent e) {
+
+    }
     
 }
