@@ -60,7 +60,7 @@ public class StageTree implements Listener{
         trackingStage = root;
         
         //Registers the interaction event
-        plugin.getServer().getPluginManager().registerEvents(new StageTreeListener(this), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new StageTreeListener(owner), plugin);
 
     }
 
