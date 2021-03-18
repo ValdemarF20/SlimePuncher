@@ -1,17 +1,18 @@
 package net.arcticforestmc.SlimePuncher.Base;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 
 
-public class GamePlayer {
+public class GamePlayer implements Listener{
 
     private int stageTile;          //X-coordinate of player's stage tile(start)
     private int bits;               //How many bits does the player have
     private int level;              //what level is the player on
     private StageTree stageTree;    //This players stageTree
-    Player owner;
+    private Player owner;
    
     /**
      * Keeps track of a player and their corresponding data
@@ -25,7 +26,7 @@ public class GamePlayer {
 
         }
         else {
-            stageTree = new StageTree(plugin, owner);
+            stageTree = new StageTree(plugin, this);
         }
 
     }
@@ -39,6 +40,14 @@ public class GamePlayer {
         return(false);//TEMPORARY
     }
 
+    /*
+    Gets the player from GamePlayer
+    */
+
+    public Player getOwner(){
+        return owner;
+    }
+
     /**
      * Load player's stage/data files(only will work if player has played before)
      * @param player
@@ -50,4 +59,5 @@ public class GamePlayer {
     public StageTree getStageTree() {
         return(stageTree);
     }
+
 }

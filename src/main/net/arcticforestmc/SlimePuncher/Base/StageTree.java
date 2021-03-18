@@ -3,13 +3,14 @@ package net.arcticforestmc.SlimePuncher.Base;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
+import Listeners.StageTreeListener;
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Stages.*;
 
 
-public class StageTree {      
+public class StageTree implements Listener{      
 
     private Stage0_0_SlimePuncher root;                                    //ROOT of tree(first stage)
 
@@ -17,12 +18,15 @@ public class StageTree {
    
     private Stage stages[];
 
+    private GamePlayer owner;
+
     /**
      * Construct stage tree
      *  
      **/ 
-    public StageTree(SlimePuncher plugin, Player owner) {
+    public StageTree(SlimePuncher plugin, GamePlayer owner) {
         root = new Stage0_0_SlimePuncher(plugin, owner);
+        
 
         //NOTE: Order doesnt matter here. Make sure there is a leaf/end game without any children.
         stages = new Stage[]{
@@ -53,13 +57,18 @@ public class StageTree {
             }
         }
 
-
-
-
-
         trackingStage = root;
+        
+        //Registers the interaction event
+        plugin.getServer().getPluginManager().registerEvents(new StageTreeListener(this), plugin);
 
     }
+
+    /*
+    Returns the player
+    */
+
+
 
     /**
      * Get a string of the tree represented in a string map

@@ -1,12 +1,15 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
-import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
+import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 
 public class Stage0_0_SlimePuncher extends Stage {
-
-    public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, Player owner) {
+    private Event event;
+    private GamePlayer owner;
+ 
+    public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
         //TODO Auto-generated constructor stub
     }
@@ -28,5 +31,13 @@ public class Stage0_0_SlimePuncher extends Stage {
         // TODO Auto-generated method stub
         
     }
+    /* Pass the event to this method
+
+    @Override
+    public void onInteract(event e){
+        
+    }
+    
+    */
     
 }

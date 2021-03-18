@@ -16,6 +16,7 @@ public class SlimePuncher extends JavaPlugin {
     public void onEnable() {
         dataHandler = new DataHandler(this);
     } 
+    
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String Label, String[] args){
         if(cmd.getName().equalsIgnoreCase("testdingdong")) {
