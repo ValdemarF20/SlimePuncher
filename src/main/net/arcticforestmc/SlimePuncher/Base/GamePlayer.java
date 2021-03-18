@@ -10,7 +10,7 @@ public class GamePlayer implements Listener{
 
     private int stageTile;          //X-coordinate of player's stage tile(start)
     private int bits;               //How many bits does the player have
-    private int level;              //what level is the player on
+    private int playerLevel;        //what level is the player on (More than one player level might be required for stageLevel up)
     private StageTree stageTree;    //This players stageTree
     private Player owner;
    
@@ -60,4 +60,9 @@ public class GamePlayer implements Listener{
         return(stageTree);
     }
 
+    public void addBits(){
+        // TODO: Check if player will level up before adding bits
+        int i = 1;
+        bits+=i;
+    }
 }
