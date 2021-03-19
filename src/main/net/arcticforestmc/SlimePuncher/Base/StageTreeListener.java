@@ -1,6 +1,8 @@
 package net.arcticforestmc.SlimePuncher.Base;
 
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -26,10 +28,11 @@ public class StageTreeListener implements Listener{
         final Block clickedBlock = e.getClickedBlock();
         Location blockLocation = clickedBlock.getLocation();
 
-        if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK) && !(e.getHand().equals(EquipmentSlot.HAND))){return;}
+        if (!(e.getAction() == Action.LEFT_CLICK_BLOCK) && !(e.getHand().equals(EquipmentSlot.HAND))){return;}
 
         if (blockLocation == slimeLocation){
             owner.addBits();
+            player.playSound(player.getLocation(), Sound.BLOCK_SLIME_STEP, SoundCategory.BLOCKS,10, 3);
         }
         owner.getStageTree().stages.forEach((stage) -> stage.onInteractEvent(e));
     }
