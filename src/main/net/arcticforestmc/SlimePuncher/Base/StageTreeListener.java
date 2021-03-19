@@ -27,7 +27,7 @@ public class StageTreeListener implements Listener{
         Location blockLocation = clickedBlock.getLocation();
 
         if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK) && !(e.getHand().equals(EquipmentSlot.HAND))){return;}
-        //IGNORE THIS COMMENT
+
         if (blockLocation == slimeLocation){
             owner.addBits();
         }
