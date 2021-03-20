@@ -26,7 +26,7 @@ public abstract class Stage {
     
     /**
      * Get identifier of what stage this is
-     * @return will return an array of 2 values, level, and index.
+     * @return will return an array of 2 values, stage level, and index.
      */
     public abstract int[] getStageIdentifier();
 

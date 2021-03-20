@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 //Unfortunately java does not have type specialization so Generic templates cannot be used like in c++
 
 
-public class DataHandler {
+public class YamlDataHandler {
 	
 	public JavaPlugin plugin;
 	
@@ -24,7 +24,7 @@ public class DataHandler {
 	private HashMap<String, File> files = new HashMap<String, File>(); //NameID, Corresponding file
 	private HashMap<String, YamlConfiguration> YAMLData = new HashMap<String, YamlConfiguration>(); //NameID, corresponding YAML data
 	
-	public DataHandler(JavaPlugin plugin) {
+	public YamlDataHandler(JavaPlugin plugin) {
 		this.plugin = plugin;
 	}
 	
@@ -50,11 +50,11 @@ public class DataHandler {
 		new BukkitRunnable() {
 			@Override
 		    public void run() { 
-				DataHandler.this.saveYAML(nameID); //save file
-				DataHandler.this.loadFileYAML(nameID); //reload cache
+				YamlDataHandler.this.saveYAML(nameID); //save file
+				YamlDataHandler.this.loadFileYAML(nameID); //reload cache
 					
 				//repeat:
-				DataHandler.this.initializeScheduledUpdate(waitTicks, nameID);
+				YamlDataHandler.this.initializeScheduledUpdate(waitTicks, nameID);
 			}
 		}.runTaskLater(plugin, waitTicks);   
 	}
@@ -66,12 +66,12 @@ public class DataHandler {
 			@Override
 		    public void run() { 
 				for(String nameID : files.keySet()) {
-					DataHandler.this.saveYAML(nameID); //save file
-					DataHandler.this.loadFileYAML(nameID); //reload cache
+					YamlDataHandler.this.saveYAML(nameID); //save file
+					YamlDataHandler.this.loadFileYAML(nameID); //reload cache
 				}
 				
 				//repeat:
-				DataHandler.this.initializeScheduledUpdate(waitTicks);
+				YamlDataHandler.this.initializeScheduledUpdate(waitTicks);
 			}
 		}.runTaskLater(plugin, waitTicks);   
 	}

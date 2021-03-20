@@ -65,4 +65,28 @@ public class GamePlayer implements Listener{
         int i = 1;
         bits+=i;
     }
+
+    /**
+     * get arena x-coord/stage tile
+     * @return
+     */
+    public int getStageTile() {
+        return(stageTile);
+    }
+
+    /**
+     * Get level of player, NOT the level of the stage the player is on
+     * @return
+     */
+    public int getPlayerLevel() {
+        return(playerLevel);
+    }
+
+    /**
+     * Get amount of bits player has
+     * @return
+     */
+    public int getBits() {
+        return(bits);
+    }
 }

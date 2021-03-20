@@ -9,12 +9,12 @@ import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 
 public class SlimePuncher extends JavaPlugin {
 
-    public static DataHandler dataHandler;
+    public static YamlDataHandler yamlDataHandler;
 
 
     @Override
     public void onEnable() {
-        dataHandler = new DataHandler(this);
+        yamlDataHandler = new YamlDataHandler(this);
     } 
     
     @Override

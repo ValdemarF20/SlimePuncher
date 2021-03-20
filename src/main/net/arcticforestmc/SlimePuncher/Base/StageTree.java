@@ -28,7 +28,7 @@ public class StageTree implements Listener{
         
 
         //NOTE: Order doesnt matter here. Make sure there is a leaf/end game without any children.
-        stages = (ArrayList<Stage>) Arrays.asList(new Stage[] {
+        stages = (ArrayList<Stage>) Arrays.asList(
             root,
             new Stage1_0_Test(plugin, owner),
             new Stage2_0_Test(plugin, owner),
@@ -37,7 +37,7 @@ public class StageTree implements Listener{
             new Stage3_1_Test(plugin, owner),
             new Stage3_2_Test(plugin, owner),
             new Stage4_0_Test(plugin, owner),
-            new Stage5_0_Test(plugin, owner)});
+            new Stage5_0_Test(plugin, owner));
 
 
         //CONSTRUCT TREE
@@ -107,6 +107,14 @@ public class StageTree implements Listener{
      */
     public void setTracking(String stageIdentifier) {
         int _stageIdentifier[] = {Integer.valueOf(stageIdentifier.charAt(0)),Integer.valueOf(stageIdentifier.charAt(2))};
+    }
+
+    /**
+     * Get current stage stage
+     * @return
+     */
+    public Stage getTracking() {
+        return(trackingStage);
     }
 
     /**
