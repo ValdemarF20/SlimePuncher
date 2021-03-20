@@ -6,10 +6,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import net.arcticforestmc.SlimePuncher.Base.StageTree;
+import org.mockito.Mock;
 
 
 public class StageTreeTest {
 
-    @Mock 
+    @Mock
     SlimePuncher slimepuncher;
 }
