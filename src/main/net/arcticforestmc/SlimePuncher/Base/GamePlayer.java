@@ -95,7 +95,7 @@ public class GamePlayer implements Listener{
      * Get xp bits
      * @return 
      */
-    public int getBits() {
+    public int getXpBits() {
         return(bits);
     }
 }
