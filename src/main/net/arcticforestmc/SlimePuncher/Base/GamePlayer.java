@@ -51,9 +51,9 @@ public class GamePlayer implements Listener{
 
     /**
      * Load player's stage/data files(only will work if player has played before)
-     * @param player
+     * @param owner
      */
-    public void loadData() {
+    public void loadData(Player owner) {
 
     }
 
