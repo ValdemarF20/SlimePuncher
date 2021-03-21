@@ -67,6 +67,7 @@ public class GamePlayer implements Listener{
         int i = 1;
         bits+=i;
         xpBits = xpBits + (i * multiplier);
+        //test
     }
 
     /**
