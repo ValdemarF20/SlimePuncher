@@ -54,7 +54,7 @@ public class GamePlayer implements Listener{
      * @param player
      */
     public void loadData() {
-        
+
     }
 
     public StageTree getStageTree() {
