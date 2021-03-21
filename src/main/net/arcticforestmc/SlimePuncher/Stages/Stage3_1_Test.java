@@ -27,4 +27,9 @@ public class Stage3_1_Test extends Stage {
         
     }
     
+    @Override
+    public boolean canProgressStage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

@@ -42,19 +42,25 @@ public class Stage0_0_SlimePuncher extends Stage {
 
 
     @Override
-    public void onInteractEvent(PlayerInteractEvent e){
-        Location slimeLocation;
+    public void onInteractEvent(PlayerInteractEvent e){    
         Player player = e.getPlayer();
-        slimeLocation = new Location(player.getWorld(), 0, 0, 0);   //Requires configuration
+        Location slimeLocation = new Location(player.getWorld(), owner.getStageTile() + 0, 10, 0);   //Requires configuration
         final Block clickedBlock = e.getClickedBlock();
         Location blockLocation = clickedBlock.getLocation();
 
-        if (!(e.getAction() == Action.LEFT_CLICK_BLOCK) && !(e.getHand().equals(EquipmentSlot.HAND))){return;}
-
-        if (blockLocation == slimeLocation){
-            owner.addBits();
-            player.playSound(player.getLocation(), Sound.BLOCK_SLIME_STEP, SoundCategory.BLOCKS,10, 3);
+        if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND)) {
+            if (blockLocation.equals(slimeLocation)) {
+                //owner.addBits();
+                player.playSound(player.getLocation(), Sound.BLOCK_SLIME_STEP, SoundCategory.BLOCKS,10, 3);
+            }
         }
+    }
+
+
+
+    @Override
+    public boolean canProgressStage() {
+        return (owner.getPlayerLevel()>=5);
     }
     
 }

@@ -1,5 +1,6 @@
 package net.arcticforestmc.SlimePuncher.Base;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,7 +16,7 @@ public class StageTree implements Listener{
 
     private Stage trackingStage;                                            //This is the stage the player is currently on 
    
-    protected ArrayList<Stage> stages;
+    protected ArrayList<Stage> stages = new ArrayList<>();
 
     private GamePlayer owner;
 
@@ -28,7 +29,7 @@ public class StageTree implements Listener{
         
 
         //NOTE: Order doesnt matter here. Make sure there is a leaf/end game without any children.
-        stages = (ArrayList<Stage>) Arrays.asList(
+        stages.addAll(Arrays.asList(
             root,
             new Stage1_0_Test(plugin, owner),
             new Stage2_0_Test(plugin, owner),
@@ -37,7 +38,7 @@ public class StageTree implements Listener{
             new Stage3_1_Test(plugin, owner),
             new Stage3_2_Test(plugin, owner),
             new Stage4_0_Test(plugin, owner),
-            new Stage5_0_Test(plugin, owner));
+            new Stage5_0_Test(plugin, owner)));
 
 
         //CONSTRUCT TREE

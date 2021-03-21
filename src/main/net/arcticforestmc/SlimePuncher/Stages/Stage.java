@@ -85,6 +85,23 @@ public abstract class Stage {
     public abstract void ownerJoinedIsland();
 
 
+    /**
+     * Calculate current player level based on xpBits
+     * @param xpBits
+     * @return
+     */
+    public int calculateCurrentPlayerLevel(int xpBits) {
+        int level = xpBits / 10;
+        return(level);
+    }
+
+    /**
+     * Get if player can move to next stage
+     * @return
+     */
+    public abstract boolean canProgressStage();
+
+
     //EVENTS:
 
     public void onInteractEvent(PlayerInteractEvent e) {}
