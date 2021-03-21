@@ -13,6 +13,7 @@ public class GamePlayer implements Listener{
     private int playerLevel;        //what level is the player on (More than one player level might be required for stageLevel up)
     private StageTree stageTree;    //This players stageTree
     private Player owner;
+    private int xp;
    
     /**
      * Keeps track of a player and their corresponding data
@@ -53,7 +54,7 @@ public class GamePlayer implements Listener{
      * @param player
      */
     public void loadData() {
-    
+        
     }
 
     public StageTree getStageTree() {
@@ -62,8 +63,10 @@ public class GamePlayer implements Listener{
 
     public void addBits(){
         // TODO: Check if player will level up before adding bits
+        int multiplier = 1;
         int i = 1;
         bits+=i;
+        xp = xp + (i * multiplier);
     }
 
     /**
