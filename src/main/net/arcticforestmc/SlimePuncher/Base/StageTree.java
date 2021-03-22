@@ -64,9 +64,15 @@ public class StageTree implements Listener{
 
     }
 
-    /*
-    Returns the player
-    */
+    /**
+     * gets called every tick by gameplayer
+     */
+    public void gameTick() {
+        //tick every stage
+        for(Stage stage : stages) {
+            stage.gameTick();
+        }
+    }
 
 
 

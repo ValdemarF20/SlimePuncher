@@ -1,6 +1,7 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
@@ -14,12 +15,15 @@ import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 
 public class Stage0_0_SlimePuncher extends Stage {
-    private Event event;
-    private GamePlayer owner;
  
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
         //TODO Auto-generated constructor stub
+
+
+
+        //TEST
+        spawnEnemyTick();
     }
 
     
@@ -42,9 +46,14 @@ public class Stage0_0_SlimePuncher extends Stage {
 
 
     @Override
-    public void onInteractEvent(PlayerInteractEvent e){    
+    public void onInteractEvent(PlayerInteractEvent e){  
+        //Requires configuration
+        int slimeBlockRelativeX = 0;
+        int slimeBlockRelativeY = 10;
+        int slimeBlockRelativeZ = 0;
+        
         Player player = e.getPlayer();
-        Location slimeLocation = new Location(player.getWorld(), owner.getStageTile() + 0, 10, 0);   //Requires configuration
+        Location slimeLocation = new Location(player.getWorld(), gameObject.getStageTile() + slimeBlockRelativeX, slimeBlockRelativeY, slimeBlockRelativeZ);   
         final Block clickedBlock = e.getClickedBlock();
         Location blockLocation = clickedBlock.getLocation();
 
@@ -60,7 +69,38 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     @Override
     public boolean canProgressStage() {
-        return (owner.getPlayerLevel()>=5);
+        return (gameObject.getPlayerLevel()>=5);
+    }
+
+    /**
+     * Go around the arena edge once and spawn enemies randomly
+     */
+    private void spawnEnemyTick() {
+        final float circleRadians = (float) (2.0F*Math.PI); //Radians in a circle idk google: https://socratic.org/questions/how-do-you-convert-360-degrees-to-radianss
+
+        //requires configuration
+        int arenaFloorRelativeX = 0;
+        int arenaFloorRelativeY = 100;
+        int arenaFloorRelativeZ = 0;
+        float stepSize = 0.01F;         //size of each step
+        int radius = 50;                //radius in blocks
+
+
+
+        for(double step = 0; step<circleRadians; step+=stepSize) {
+            int x = (int) Math.round(Math.sin(step) * radius) + gameObject.getStageTile() + arenaFloorRelativeX;
+            int z = (int) Math.round(Math.sin(step) * radius) + arenaFloorRelativeZ;
+
+            gameObject.getOwner().getWorld().getBlockAt(x, arenaFloorRelativeY, z).setType(Material.STONE);
+        }
+    }
+
+
+
+    @Override
+    public void gameTick() {
+        // TODO Auto-generated method stub
+        
     }
     
 }

@@ -12,7 +12,9 @@ public abstract class Stage {
 
     protected ArrayList<Stage> children = new ArrayList<>();
     protected SlimePuncher plugin;
-    protected GamePlayer owner;
+    protected GamePlayer gameObject;
+
+
 
     /**
      * Construct object
@@ -20,8 +22,13 @@ public abstract class Stage {
      */
     protected Stage(SlimePuncher slimePuncher, GamePlayer owner) {
         plugin = slimePuncher;
-        this.owner = owner;
+        this.gameObject = owner;
     }
+
+    /**
+     * gets called every tick by the stagetree
+     */
+    public abstract void gameTick();
     
     
     /**
