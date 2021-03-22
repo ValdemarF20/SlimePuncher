@@ -56,5 +56,4 @@ public class Stage0_0_SlimePuncher extends Stage {
             player.playSound(player.getLocation(), Sound.BLOCK_SLIME_STEP, SoundCategory.BLOCKS,10, 3);
         }
     }
-    
 }

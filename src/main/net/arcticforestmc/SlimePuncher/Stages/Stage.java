@@ -23,7 +23,6 @@ public abstract class Stage {
         this.owner = owner;
     }
     
-    
     /**
      * Get identifier of what stage this is
      * @return will return an array of 2 values, stage level, and index.

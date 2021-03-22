@@ -11,7 +11,6 @@ public class SlimePuncher extends JavaPlugin {
 
     public static YamlDataHandler yamlDataHandler;
 
-
     @Override
     public void onEnable() {
         yamlDataHandler = new YamlDataHandler(this);
