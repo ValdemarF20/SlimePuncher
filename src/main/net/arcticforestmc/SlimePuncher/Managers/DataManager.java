@@ -64,7 +64,7 @@ public class DataManager {
     }
 
     public void addOwner(GamePlayer owner) {
-
+        owners.add(owner);
     }
 
     private void openConnection() throws SQLException, ClassNotFoundException {
