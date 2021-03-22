@@ -14,10 +14,18 @@ public class GamePlayer implements Listener{
     private int playerLevel;        //what level is the player on (More than one player level might be required for stageLevel up)
     private StageTree stageTree;    //This players stageTree
     private Player owner;
+
+    /**
+     * gets called every tick by slimepuncher
+     */
+    public void gameTick() {
+        stageTree.gameTick();
+    }
    
     /**
      * Keeps track of a player and their corresponding data
      * @param player
+     * @param plugin
      */
     public GamePlayer(Player player, SlimePuncher plugin) {
         owner = player;

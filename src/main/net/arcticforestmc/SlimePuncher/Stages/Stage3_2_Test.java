@@ -4,7 +4,6 @@ import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 
 public class Stage3_2_Test extends Stage {
-    private GamePlayer owner;
 
     public Stage3_2_Test(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
@@ -27,4 +26,15 @@ public class Stage3_2_Test extends Stage {
         
     }
     
+    @Override
+    public boolean canProgressStage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void gameTick() {
+        // TODO Auto-generated method stub
+        
+    }
 }

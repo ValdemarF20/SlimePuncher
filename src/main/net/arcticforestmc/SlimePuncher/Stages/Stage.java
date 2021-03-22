@@ -12,7 +12,9 @@ public abstract class Stage {
 
     protected ArrayList<Stage> children = new ArrayList<>();
     protected SlimePuncher plugin;
-    protected GamePlayer owner;
+    protected GamePlayer gameObject;
+
+
 
     /**
      * Construct object
@@ -20,8 +22,13 @@ public abstract class Stage {
      */
     protected Stage(SlimePuncher slimePuncher, GamePlayer owner) {
         plugin = slimePuncher;
-        this.owner = owner;
+        this.gameObject = owner;
     }
+
+    /**
+     * gets called every tick by the stagetree
+     */
+    public abstract void gameTick();
     
     /**
      * Get identifier of what stage this is
@@ -82,6 +89,23 @@ public abstract class Stage {
      * When owner joins island(for example he gets online)
      */
     public abstract void ownerJoinedIsland();
+
+
+    /**
+     * Calculate current player level based on xpBits
+     * @param xpBits
+     * @return
+     */
+    public int calculateCurrentPlayerLevel(int xpBits) {
+        int level = xpBits / 10;
+        return(level);
+    }
+
+    /**
+     * Get if player can move to next stage
+     * @return
+     */
+    public abstract boolean canProgressStage();
 
 
     //EVENTS:
