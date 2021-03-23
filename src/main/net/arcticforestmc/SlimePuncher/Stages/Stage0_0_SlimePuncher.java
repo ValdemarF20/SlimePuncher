@@ -69,7 +69,7 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     @Override
     public boolean canProgressStage() {
-        return (gameObject.getPlayerLevel()>=5);
+        return (gameObject.getOwnerLevel()>=5);
     }
 
     /**
