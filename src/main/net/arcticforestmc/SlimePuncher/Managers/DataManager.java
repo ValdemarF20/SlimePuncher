@@ -47,36 +47,37 @@ public class DataManager {
         //update sql every 20 minutes, in addition to every time server restarts.
         new BukkitRunnable() {
             public void run() {
-                try {
-                    update();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
             }
         }.runTaskTimer(plugin, 20*60*20, 20*60*20);
     }
 
-    public void update() throws SQLException {
+    public void update() {
         for(GamePlayer player : players) {
-            //serialize gameplayer data
-            SerializedGamePlayer data = new SerializedGamePlayer(player);
+            try {
+                //serialize gameplayer data
+                SerializedGamePlayer data = new SerializedGamePlayer(player);
 
-            //TODO: Not most efficient, probably incorporate this into addOwner
-            //Check if row exists with uuid:
-            ResultSet result = statement.executeQuery("SELECT EXISTS(SELECT * from SlimePuncher WHERE UUID="+owner.getOwner().getUniqueId().toString()+");");
-            while(result.next()) {
-                if(result.getBoolean("EXISTS")) {
-                    //UPDATE SQL
-                    statement.executeUpdate("");
-                    return;
+                //TODO: Not most efficient, probably incorporate this into addOwner
+                //Check if row exists with uuid:
+                ResultSet result = statement.executeQuery("SELECT EXISTS(SELECT * from SlimePuncher WHERE UUID="+player.getOwner().getUniqueId().toString()+");");
+                while(result.next()) {
+                    if(result.getBoolean("EXISTS")) {
+                        //UPDATE SQL
+                        statement.executeUpdate("");
+                        return;
+                    }
+                }
+
+                //write NEW to SQL
+                statement.executeUpdate(String.format(
+                    "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,STAGETILE) VALUES (%s, %s. %d. %d, %d)",
+                    player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits(), player.getStageTile()));
+        
+                }
+                catch(SQLException e) {
+                    e.printStackTrace();
                 }
             }
-
-            //write NEW to SQL
-            statement.executeUpdate(String.format(
-                "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,STAGETILE) VALUES (%s, %s. %d. %d, %d)",
-                player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits(), player.getStageTile()));
-        }
     }
 
     public void addGamePlayer(GamePlayer player) {

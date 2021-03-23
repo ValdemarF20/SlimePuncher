@@ -23,7 +23,7 @@ public class SlimePuncher extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        dataManager.update();
+        //dataManager.update();
     }
     
     @Override
