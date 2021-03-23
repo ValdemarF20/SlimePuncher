@@ -80,7 +80,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         int arenaFloorRelativeX = 0;
         int arenaFloorRelativeY = 100;
         int arenaFloorRelativeZ = 0;
-        float stepSize = 0.01F;         //size of each step
+        float stepSize = 0.1F;         //size of each step
         int radius = 50;                //radius in blocks
 
 
