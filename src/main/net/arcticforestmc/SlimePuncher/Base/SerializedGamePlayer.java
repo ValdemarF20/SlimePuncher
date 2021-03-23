@@ -5,7 +5,6 @@ public class SerializedGamePlayer {
     
     public int bits;
     public int xpBits;
-    public int playerLevel;
     public String trackingStageIdentifier;
     public int stageTile;
     public String ownerUUID;
@@ -15,7 +14,6 @@ public class SerializedGamePlayer {
         bits = source.getBits();
         xpBits = source.getXpBits();
         stageTile = source.getStageTile();
-        playerLevel = source.getPlayerLevel();
         ownerUUID = source.getOwner().getUniqueId().toString();
         trackingStageIdentifier = source.getStageTree().getTracking().getStageIdentifier()[0]+
                                   "_"+

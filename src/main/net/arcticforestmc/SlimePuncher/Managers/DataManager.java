@@ -2,6 +2,7 @@ package net.arcticforestmc.SlimePuncher.Managers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class DataManager {
 
 
 
-    private ArrayList<GamePlayer> owners = new ArrayList<>();
+    private ArrayList<GamePlayer> players = new ArrayList<>();
     private JavaPlugin plugin;
 
     public DataManager(JavaPlugin plugin) {
@@ -46,25 +47,40 @@ public class DataManager {
         //update sql every 20 minutes, in addition to every time server restarts.
         new BukkitRunnable() {
             public void run() {
-                update();
+                try {
+                    update();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }.runTaskTimer(plugin, 20*60*20, 20*60*20);
     }
 
-    public void update() {
-        for(GamePlayer owner : owners) {
+    public void update() throws SQLException {
+        for(GamePlayer player : players) {
             //serialize gameplayer data
-            SerializedGamePlayer data = new SerializedGamePlayer(owner);
+            SerializedGamePlayer data = new SerializedGamePlayer(player);
 
-            //write to SQL
+            //TODO: Not most efficient, probably incorporate this into addOwner
+            //Check if row exists with uuid:
+            ResultSet result = statement.executeQuery("SELECT EXISTS(SELECT * from SlimePuncher WHERE UUID="+owner.getOwner().getUniqueId().toString()+");");
+            while(result.next()) {
+                if(result.getBoolean("EXISTS")) {
+                    //UPDATE SQL
+                    statement.executeUpdate("");
+                    return;
+                }
+            }
 
-
-
+            //write NEW to SQL
+            statement.executeUpdate(String.format(
+                "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,STAGETILE) VALUES (%s, %s. %d. %d, %d)",
+                player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits(), player.getStageTile()));
         }
     }
 
-    public void addOwner(GamePlayer owner) {
-        owners.add(owner);
+    public void addGamePlayer(GamePlayer player) {
+        players.add(player);
     }
 
     private void openConnection() throws SQLException, ClassNotFoundException {
