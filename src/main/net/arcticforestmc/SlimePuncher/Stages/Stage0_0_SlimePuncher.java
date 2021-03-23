@@ -88,7 +88,7 @@ public class Stage0_0_SlimePuncher extends Stage {
 
 
         for(double step = 0; step<circleRadians; step+=stepSize) {
-            int x = (int) Math.round(Math.sin(step) * radius) + gameObject.getStageTile() + arenaFloorRelativeX;
+            int x = (int) Math.round(Math.cos(step) * radius) + gameObject.getStageTile() + arenaFloorRelativeX;
             int z = (int) Math.round(Math.sin(step) * radius) + arenaFloorRelativeZ;
 
             gameObject.getOwner().getWorld().getBlockAt(x, arenaFloorRelativeY, z).setType(Material.STONE);
