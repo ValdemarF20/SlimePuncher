@@ -55,12 +55,14 @@ public class Stage0_0_SlimePuncher extends Stage {
         Player player = e.getPlayer();
         Location slimeLocation = new Location(player.getWorld(), gameObject.getStageTile() + slimeBlockRelativeX, slimeBlockRelativeY, slimeBlockRelativeZ);   
         final Block clickedBlock = e.getClickedBlock();
-        Location blockLocation = clickedBlock.getLocation();
+        if(clickedBlock!=null) {
+            Location blockLocation = clickedBlock.getLocation();
 
-        if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND)) {
-            if (blockLocation.equals(slimeLocation)) {
-                //owner.addBits();
-                player.playSound(player.getLocation(), Sound.BLOCK_SLIME_STEP, SoundCategory.BLOCKS,10, 3);
+            if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND)) {
+                if (blockLocation.equals(slimeLocation)) {
+                    //owner.addBits();
+                    player.playSound(player.getLocation(), Sound.BLOCK_SLIME_STEP, SoundCategory.BLOCKS,10, 3);
+                }
             }
         }
     }
