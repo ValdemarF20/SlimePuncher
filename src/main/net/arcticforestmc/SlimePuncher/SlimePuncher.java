@@ -15,7 +15,6 @@ public class SlimePuncher extends JavaPlugin {
 
     public static DataManager dataManager;
 
-
     @Override
     public void onEnable() {
         yamlDataHandler = new YamlDataHandler(this);
@@ -32,7 +31,7 @@ public class SlimePuncher extends JavaPlugin {
         if(cmd.getName().equalsIgnoreCase("testdingdong")) {
             GamePlayer test = new GamePlayer(Bukkit.getPlayer(args[0]), this); 
 
-            //create a handler class for all the gamerlpayers, this is fine for now tho
+            //create a handler class for all the gamerplayers, this is fine for now tho
             
             new BukkitRunnable(){
                 @Override

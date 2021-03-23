@@ -65,8 +65,6 @@ public class Stage0_0_SlimePuncher extends Stage {
         }
     }
 
-
-
     @Override
     public boolean canProgressStage() {
         return (gameObject.getPlayerLevel()>=5);
@@ -94,13 +92,9 @@ public class Stage0_0_SlimePuncher extends Stage {
             gameObject.getOwner().getWorld().getBlockAt(x, arenaFloorRelativeY, z).setType(Material.STONE);
         }
     }
-
-
-
     @Override
     public void gameTick() {
         // TODO Auto-generated method stub
         
     }
-    
 }

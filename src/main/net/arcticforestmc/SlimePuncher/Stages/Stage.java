@@ -30,7 +30,6 @@ public abstract class Stage {
      */
     public abstract void gameTick();
     
-    
     /**
      * Get identifier of what stage this is
      * @return will return an array of 2 values, stage level, and index.
