@@ -81,7 +81,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         int arenaFloorRelativeY = 100;
         int arenaFloorRelativeZ = 0;
         float stepSize = 0.1F;         //size of each step
-        int radius = 50;                //radius in blocks
+        int radius = 25;                //radius in blocks
 
 
 
@@ -89,7 +89,8 @@ public class Stage0_0_SlimePuncher extends Stage {
             int x = (int) Math.round(Math.cos(step) * radius) + gameObject.getStageTile() + arenaFloorRelativeX;
             int z = (int) Math.round(Math.sin(step) * radius) + arenaFloorRelativeZ;
 
-            gameObject.getOwner().getWorld().getBlockAt(x, arenaFloorRelativeY, z).setType(Material.STONE);
+            //test set blocks:
+            gameObject.getOwner().getWorld().getBlockAt(x, arenaFloorRelativeY, z).setType(Material.SEA_LANTERN);
         }
     }
     @Override
