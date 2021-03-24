@@ -80,21 +80,24 @@ public class Stage0_0_SlimePuncher extends Stage {
 
         //requires configuration
         int arenaFloorRelativeX = 0;
-        int arenaFloorRelativeY = 100;
+        int arenaFloorRelativeY = 105;
         int arenaFloorRelativeZ = 0;
-        float stepSize = 0.1F;         //size of each step
-        int radius = 25;                //radius in blocks
-
-
+        float radius = 25;                //radius in blocks
+        float stepSize = 1 / radius;          //size of each step
+        int mobsSpawned = 0;
 
         for(double step = 0; step<circleRadians; step+=stepSize) {
             int x = (int) Math.round(Math.cos(step) * radius) + gameObject.getStageTile() + arenaFloorRelativeX;
             int z = (int) Math.round(Math.sin(step) * radius) + arenaFloorRelativeZ;
 
             //test set blocks:
-            gameObject.getOwner().getWorld().getBlockAt(x, arenaFloorRelativeY, z).setType(Material.SEA_LANTERN);
+            if(Math.round(Math.random() * 10) == 1 && mobsSpawned <= 5){
+                gameObject.getOwner().getWorld().getBlockAt(x, arenaFloorRelativeY, z).setType(Material.SEA_LANTERN);
+                mobsSpawned++;
+            }
         }
     }
+
     @Override
     public void gameTick() {
         // TODO Auto-generated method stub
