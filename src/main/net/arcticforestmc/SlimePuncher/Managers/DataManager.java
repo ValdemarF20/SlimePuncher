@@ -95,9 +95,9 @@ public class DataManager {
     }
 
 
-    public GamePlayer loadGamePlayerObjectIfCan(UUID player) {
+    public SerializedGamePlayer loadGamePlayerIfCan(UUID player) {
 
-        GamePlayer target = null;
+        SerializedGamePlayer target = null;
 
         return(target);
     }
