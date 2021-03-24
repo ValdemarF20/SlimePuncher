@@ -57,20 +57,17 @@ public class DataManager {
                 //serialize gameplayer data
                 SerializedGamePlayer data = new SerializedGamePlayer(player);
 
-                //TODO: Not most efficient, probably incorporate this into addOwner
-                //Check if row exists with uuid:
-                ResultSet result = statement.executeQuery("SELECT EXISTS(SELECT * from SlimePuncher WHERE UUID="+player.getOwner().getUniqueId().toString()+");");
-                while(result.next()) {
-                    if(result.getBoolean("EXISTS")) {
-                        //UPDATE SQL
-                        statement.executeUpdate("");
-                        return;
-                    }
+
+                if(loadGamePlayerIfCan(player.getOwner().getUniqueId())!=null) { //does the uuid exist in database
+                    //UPDATE SQL
+                    statement.executeUpdate(String.format("UPDATE SlimePuncher SET TRACKINGSTAGE='%s', BITS=%d, XPBITS=%d, STAGETILE=%d WHERE UUID='%s'",
+                    player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1],  player.getBits(),  player.getXpBits(),  player.getStageTile(), player.getOwner().getUniqueId().toString()));
+                    return;
                 }
 
-                //write NEW to SQL
+                //it doesnt so write NEW to SQL
                 statement.executeUpdate(String.format(
-                    "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,STAGETILE) VALUES (%s, %s. %d. %d, %d)",
+                    "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,STAGETILE) VALUES ('%s', '%s'. %d. %d, %d)",
                     player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits(), player.getStageTile()));
         
                 }
@@ -98,6 +95,20 @@ public class DataManager {
     public SerializedGamePlayer loadGamePlayerIfCan(UUID player) {
 
         SerializedGamePlayer target = null;
+
+        try {
+            ResultSet existResult = statement.executeQuery("SELECT EXISTS(SELECT * from SlimePuncher WHERE UUID="+player+");");
+            //only 1 row is needed because only 1 row should match
+            if(existResult.getBoolean("EXISTS")) {
+                ResultSet dataResult = statement.executeQuery("SELECT * from SlimePuncher WHERE UUID="+player+");");
+                
+
+
+                target = new SerializedGamePlayer(dataResult.getString("UUID"), dataResult.getString("TRACKINGSTAGE"), dataResult.getInt("BITS"), dataResult.getInt("XPBITS"), dataResult.getInt("STAGETILE"));
+            }
+        } catch(SQLException e) {
+
+        }
 
         return(target);
     }

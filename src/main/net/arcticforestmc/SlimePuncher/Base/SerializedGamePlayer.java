@@ -19,4 +19,12 @@ public class SerializedGamePlayer {
                                   "_"+
                                   source.getStageTree().getTracking().getStageIdentifier()[1];
     }
+
+    public SerializedGamePlayer(String ownerUUID, String trackingStageIdentifier, int bits, int xpBits, int stageTile) {
+        this.bits = bits;
+        this.xpBits = xpBits;
+        this.stageTile = stageTile;
+        this.ownerUUID = ownerUUID;
+        this.trackingStageIdentifier = trackingStageIdentifier; 
+    }
 }
