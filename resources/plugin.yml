@@ -4,3 +4,4 @@ version: 0.0.0-ALPHA
 authors: ["Connor Michalec", ""]
 commands:
   testdingdong:
+depends: []

@@ -61,7 +61,7 @@ public class Stage0_0_SlimePuncher extends Stage {
             if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND)) {
                 if (blockLocation.equals(slimeLocation)) {
                     //owner.addBits();
-                    player.playSound(player.getLocation(), Sound.BLOCK_SLIME_STEP, SoundCategory.BLOCKS,10, 3);
+                    player.playSound(player.getLocation(), Sound.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS,10, 3);
                 }
             }
         }
