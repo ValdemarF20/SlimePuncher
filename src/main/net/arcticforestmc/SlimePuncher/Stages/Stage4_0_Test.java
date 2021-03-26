@@ -21,7 +21,7 @@ public class Stage4_0_Test extends Stage {
     }
 
     @Override
-    public void ownerJoinedIsland() {
+    public void ownerJoinedArena() {
         // TODO Auto-generated method stub
         
     }

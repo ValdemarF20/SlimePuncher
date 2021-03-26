@@ -60,15 +60,15 @@ public class DataManager {
 
                 if(loadGamePlayerIfCan(player.getOwner().getUniqueId())!=null) { //does the uuid exist in database
                     //UPDATE SQL
-                    statement.executeUpdate(String.format("UPDATE SlimePuncher SET TRACKINGSTAGE='%s', BITS=%d, XPBITS=%d, STAGETILE=%d WHERE UUID='%s'",
-                    player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1],  player.getBits(),  player.getXpBits(),  player.getStageXTile(), player.getOwner().getUniqueId().toString()));
+                    statement.executeUpdate(String.format("UPDATE SlimePuncher SET TRACKINGSTAGE='%s', BITS=%d, XPBITS=%d, ARENAXTILE=%d WHERE UUID='%s'",
+                    player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1],  player.getBits(),  player.getXpBits(),  player.getArenaXTile(), player.getOwner().getUniqueId().toString()));
                     return;
                 }
 
                 //it doesnt so write NEW to SQL
                 statement.executeUpdate(String.format(
-                    "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,STAGETILE) VALUES ('%s', '%s'. %d. %d, %d)",
-                    player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits(), player.getStageXTile()));
+                    "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,ARENAXTILE) VALUES ('%s', '%s'. %d. %d, %d)",
+                    player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits()));
         
                 }
                 catch(SQLException e) {
@@ -104,7 +104,7 @@ public class DataManager {
                 
 
 
-                target = new SerializedGamePlayer(dataResult.getString("UUID"), dataResult.getString("TRACKINGSTAGE"), dataResult.getInt("BITS"), dataResult.getInt("XPBITS"), dataResult.getInt("STAGEXTILE"), dataResult.getInt("STAGEZTILE"));
+                target = new SerializedGamePlayer(dataResult.getString("UUID"), dataResult.getString("TRACKINGSTAGE"), dataResult.getInt("BITS"), dataResult.getInt("XPBITS"), dataResult.getInt("ARENAXTILE"));
             }
         } catch(SQLException e) {
 

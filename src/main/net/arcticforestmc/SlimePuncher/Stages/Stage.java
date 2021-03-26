@@ -2,7 +2,6 @@ package net.arcticforestmc.SlimePuncher.Stages;
 
 import java.util.ArrayList;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -13,7 +12,7 @@ public abstract class Stage {
 
     protected ArrayList<Stage> children = new ArrayList<>();
     protected SlimePuncher plugin;
-    protected GamePlayer gameObject;
+    protected GamePlayer gamePlayerObject;
 
 
 
@@ -21,9 +20,9 @@ public abstract class Stage {
      * Construct object
      * @return
      */
-    protected Stage(SlimePuncher slimePuncher, GamePlayer owner) {
+    protected Stage(SlimePuncher slimePuncher, GamePlayer gamePlayer) {
         plugin = slimePuncher;
-        this.gameObject = owner;
+        this.gamePlayerObject = gamePlayer;
     }
 
     /**
@@ -87,9 +86,9 @@ public abstract class Stage {
     }
 
     /**
-     * When owner joins island(for example he gets online)
+     * When owner joins arena(for example he gets online)
      */
-    public abstract void ownerJoinedIsland();
+    public abstract void ownerJoinedArena();
 
 
     /**
@@ -112,6 +111,6 @@ public abstract class Stage {
     //EVENTS:
 
     public void onInteractEvent(PlayerInteractEvent e) {}
-    public void onMobDeath(EntityDeathEvent e) {}
+    public void onEntityDeathEvent(EntityDeathEvent e) {}
     
 }

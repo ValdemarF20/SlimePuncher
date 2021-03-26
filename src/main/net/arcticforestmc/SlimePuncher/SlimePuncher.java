@@ -20,6 +20,10 @@ public class SlimePuncher extends JavaPlugin {
 
     public static WorldEdit worldEdit;
 
+    //SIZE OF ARENAS:
+    public static int sizeX = 100;
+    public static int sizeZ = 100;
+
     @Override
     public void onEnable() {
         

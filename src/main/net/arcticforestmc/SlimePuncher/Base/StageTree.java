@@ -1,10 +1,10 @@
 package net.arcticforestmc.SlimePuncher.Base;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.arcticforestmc.SlimePuncher.Listeners.MobDeathListener;
+
+
 import org.bukkit.event.Listener;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
@@ -17,29 +17,28 @@ public class StageTree implements Listener{
 
     private Stage trackingStage;                                            //This is the stage the player is currently on 
    
-    protected ArrayList<Stage> stages = new ArrayList<>();
+    public ArrayList<Stage> stages = new ArrayList<>();
 
-    private GamePlayer owner;
 
     /**
      * Construct stage tree
      *  
      **/ 
-    public StageTree(SlimePuncher plugin, GamePlayer owner) {
-        root = new Stage0_0_SlimePuncher(plugin, owner);
+    public StageTree(SlimePuncher plugin, GamePlayer gamePlayerObject) {
+        root = new Stage0_0_SlimePuncher(plugin, gamePlayerObject);
         
 
         //NOTE: Order doesnt matter here. Make sure there is a leaf/end game without any children.
         stages.addAll(Arrays.asList(
             root,
-            new Stage1_0_Test(plugin, owner),
-            new Stage2_0_Test(plugin, owner),
-            new Stage2_1_Test(plugin, owner),
-            new Stage3_0_Test(plugin, owner),
-            new Stage3_1_Test(plugin, owner),
-            new Stage3_2_Test(plugin, owner),
-            new Stage4_0_Test(plugin, owner),
-            new Stage5_0_Test(plugin, owner)));
+            new Stage1_0_Test(plugin, gamePlayerObject),
+            new Stage2_0_Test(plugin, gamePlayerObject),
+            new Stage2_1_Test(plugin, gamePlayerObject),
+            new Stage3_0_Test(plugin, gamePlayerObject),
+            new Stage3_1_Test(plugin, gamePlayerObject),
+            new Stage3_2_Test(plugin, gamePlayerObject),
+            new Stage4_0_Test(plugin, gamePlayerObject),
+            new Stage5_0_Test(plugin, gamePlayerObject)));
 
 
         //CONSTRUCT TREE
@@ -60,9 +59,8 @@ public class StageTree implements Listener{
 
         trackingStage = root;
         
-        //Registers the interaction event
-        plugin.getServer().getPluginManager().registerEvents(new StageTreeListener(owner), plugin);
-        plugin.getServer().getPluginManager().registerEvents(new MobDeathListener(), plugin);
+        //Registers the events
+        plugin.getServer().getPluginManager().registerEvents(new StageEventDispatcher(gamePlayerObject), plugin);
     }
 
     /**
@@ -96,18 +94,6 @@ public class StageTree implements Listener{
 
     }
 
-    /**
-     * Get a stage by it's identifier
-     * @param identifier
-     * @return
-     */
-    public Stage getStage(int identifier[]) {
-        int level = identifier[0];
-        int index = identifier[1];
-
-        return(null);
-
-    } 
 
     /**
      * set the current stage based on string(used for loading)
