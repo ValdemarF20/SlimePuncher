@@ -70,12 +70,11 @@ public class GamePlayer implements Listener{
         return(stageTree);
     }
 
-    public void addBits(){
+    public void addBits(int amount){
         // TODO: Check if player will level up before adding bits
         int multiplier = 1;
-        int i = 1;
-        bits+=i;
-        xpBits = xpBits + (i * multiplier);
+        bits+=amount;
+        xpBits = xpBits + (amount * multiplier);
         //test
     }
 

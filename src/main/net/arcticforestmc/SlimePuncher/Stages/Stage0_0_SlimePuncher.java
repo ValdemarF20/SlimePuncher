@@ -5,8 +5,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -15,7 +15,8 @@ import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 
 public class Stage0_0_SlimePuncher extends Stage {
- 
+    private GamePlayer owner;
+    
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
         //TODO Auto-generated constructor stub
@@ -100,9 +101,16 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     @Override
     public void onMobDeath(EntityDeathEvent e){
-        EntityType entity = e.getEntityType();
-        if(entity.equals(EntityType.ZOMBIE)) {
+        Entity entity = e.getEntity();
+        EntityDamageEvent damageEvent = entity.getLastDamageCause();
+
+        if(damageEvent == null) return;
+
+        if(entity.getType().equals(EntityType.ZOMBIE)) {
             mobsAlive -= 1;
+            if (damageEvent.getCause() == (EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+                owner.addBits(1);
+            }
         }
     }
 
