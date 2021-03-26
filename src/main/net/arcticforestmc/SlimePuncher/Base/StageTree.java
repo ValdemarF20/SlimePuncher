@@ -25,9 +25,10 @@ public class StageTree implements Listener{
      *  
      **/ 
     public StageTree(SlimePuncher plugin, GamePlayer gamePlayerObject, String trackingStageIdentifier) {
+        
         root = new Stage0_0_SlimePuncher(plugin, gamePlayerObject);
         
-
+        
         //NOTE: Order doesnt matter here. Make sure there is a leaf/end game without any children.
         stages.addAll(Arrays.asList(
             root,
@@ -39,33 +40,34 @@ public class StageTree implements Listener{
             new Stage3_2_Test(plugin, gamePlayerObject),
             new Stage4_0_Test(plugin, gamePlayerObject),
             new Stage5_0_Test(plugin, gamePlayerObject)));
-
-
-        //CONSTRUCT TREE
-        for(Stage stage : stages) {
-            if(stage.hasChildren()) {
-                int childrenDescriptor[][] = stage.getChildrenDescriptor();
-                
-                for(int childIdentifier[] : childrenDescriptor) {
-                    //Look for this stage and add it as a child to the current stage
-                    for(Stage child : stages) {
-                        if(Arrays.equals(child.getStageIdentifier(), childIdentifier)) {
-                            stage.addChildObject(child);
+            
+            
+            //CONSTRUCT TREE
+            for(Stage stage : stages) {
+                if(stage.hasChildren()) {
+                    int childrenDescriptor[][] = stage.getChildrenDescriptor();
+                    
+                    for(int childIdentifier[] : childrenDescriptor) {
+                        //Look for this stage and add it as a child to the current stage
+                        for(Stage child : stages) {
+                            if(Arrays.equals(child.getStageIdentifier(), childIdentifier)) {
+                                stage.addChildObject(child);
+                            }
                         }
                     }
                 }
             }
+            
+            
+            setTracking(getStageFromIdentifier(trackingStageIdentifier));
+            
+            //Registers the events
+            plugin.getServer().getPluginManager().registerEvents(new StageEventDispatcher(gamePlayerObject), plugin);
         }
-
-        setTracking(getStageFromIdentifier(trackingStageIdentifier));
         
-        //Registers the events
-        plugin.getServer().getPluginManager().registerEvents(new StageEventDispatcher(gamePlayerObject), plugin);
-    }
-
-    /**
-     * gets called every tick by gameplayer
-     */
+        /**
+         * gets called every tick by gameplayer
+         */
     public void gameTick() {
         //tick every stage
         for(Stage stage : stages) {
@@ -108,7 +110,7 @@ public class StageTree implements Listener{
      * @return
      */
     public Stage getStageFromIdentifier(String stageIdentifier) {
-        int _stageIdentifier[] = {Integer.valueOf(stageIdentifier.charAt(0)),Integer.valueOf(stageIdentifier.charAt(2))};
+        int _stageIdentifier[] = {Integer.valueOf(String.valueOf(stageIdentifier.charAt(0))),Integer.valueOf(String.valueOf(stageIdentifier.charAt(2)))}; //string.valueof is needed 
 
         for(Stage stage : stages) {
             if(stage.getStageIdentifier()[0] == _stageIdentifier[0] && stage.getStageIdentifier()[1] == _stageIdentifier[1]) {

@@ -35,7 +35,7 @@ public class GamePlayer implements Listener{
         owner = player;
         
         //Check if this player has played the game before
-        if(playedBefore(player)) {
+        if(playedBefore(owner)) {
 
         }
         else {

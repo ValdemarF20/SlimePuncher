@@ -24,8 +24,9 @@ public class Stage0_0_SlimePuncher extends Stage {
 
 
 
-        //TEST
-        spawnEnemyTick();
+
+
+        
     }
 
     
@@ -128,6 +129,6 @@ public class Stage0_0_SlimePuncher extends Stage {
     @Override
     public void gameTick() {
         // TODO Auto-generated method stub
-        
+        spawnEnemyTick();
     }
 }
