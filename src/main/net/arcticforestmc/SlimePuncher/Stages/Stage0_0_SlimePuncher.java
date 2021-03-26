@@ -59,10 +59,15 @@ public class Stage0_0_SlimePuncher extends Stage {
         if(clickedBlock!=null) {
             Location blockLocation = clickedBlock.getLocation();
 
+            double blockX = blockLocation.getX();
+            double blockY = blockLocation.getY();
+            double blockZ = blockLocation.getZ();
+
             if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND)) {
                 if (blockLocation.equals(slimeLocation)) {
-                    //owner.addBits();
+                    owner.addBits(1);
                     player.playSound(player.getLocation(), Sound.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS,10, 3);
+                    player.getWorld().spawnParticle(Particle.SLIME, blockX, blockY, blockZ, 1);
                 }
             }
         }
@@ -102,9 +107,13 @@ public class Stage0_0_SlimePuncher extends Stage {
     @Override
     public void onMobDeath(EntityDeathEvent e){
         Entity entity = e.getEntity();
+        double entityLocationX = entity.getLocation().getX();
+        double entityLocationZ = entity.getLocation().getZ();
         EntityDamageEvent damageEvent = entity.getLastDamageCause();
 
         if(damageEvent == null) return;
+        if(!(entityLocationX < owner.getStageTile() + GamePlayer.sizeX) && !(entityLocationX > owner.getStageTile())) return;
+        if(!(entityLocationZ < owner.getStageTile() + GamePlayer.sizeZ) && !(entityLocationZ > owner.getStageTile())) return;
 
         if(entity.getType().equals(EntityType.ZOMBIE)) {
             mobsAlive -= 1;

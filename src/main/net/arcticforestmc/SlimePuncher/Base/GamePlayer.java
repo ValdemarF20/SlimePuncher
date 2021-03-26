@@ -13,7 +13,10 @@ public class GamePlayer implements Listener{
     private int xpBits;             //Used for leveling, it will not be deducted when spent and under certain circumstances it will not go up by the same amount as bits.
     private int ownerLevel;         //what level is the player on (More than one player level might be required for stageLevel up)
     private StageTree stageTree;    //This players stageTree
-    private Player owner;
+    private Player owner;           //The player
+
+    public static float sizeX = 100;
+    public static float sizeZ = 100;
 
     /**
      * gets called every tick by slimepuncher
@@ -107,6 +110,6 @@ public class GamePlayer implements Listener{
      * @return 
      */
     public int getXpBits() {
-        return(bits);
+        return(xpBits);
     }
 }
