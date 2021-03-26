@@ -24,7 +24,7 @@ public class StageTree implements Listener{
      * Construct stage tree
      *  
      **/ 
-    public StageTree(SlimePuncher plugin, GamePlayer gamePlayerObject) {
+    public StageTree(SlimePuncher plugin, GamePlayer gamePlayerObject, String trackingStageIdentifier) {
         root = new Stage0_0_SlimePuncher(plugin, gamePlayerObject);
         
 
@@ -57,7 +57,7 @@ public class StageTree implements Listener{
             }
         }
 
-        trackingStage = root;
+        setTracking(getStageFromIdentifier(trackingStageIdentifier));
         
         //Registers the events
         plugin.getServer().getPluginManager().registerEvents(new StageEventDispatcher(gamePlayerObject), plugin);
@@ -99,9 +99,28 @@ public class StageTree implements Listener{
      * set the current stage based on string(used for loading)
      * @param stageIdentifier
      */
-    public void setTracking(String stageIdentifier) {
-        int _stageIdentifier[] = {Integer.valueOf(stageIdentifier.charAt(0)),Integer.valueOf(stageIdentifier.charAt(2))};
+    public void setTracking(Stage stage) {
+        trackingStage = stage;
     }
+
+    /**
+     * Get stage object from stage identifier
+     * @return
+     */
+    public Stage getStageFromIdentifier(String stageIdentifier) {
+        int _stageIdentifier[] = {Integer.valueOf(stageIdentifier.charAt(0)),Integer.valueOf(stageIdentifier.charAt(2))};
+
+        for(Stage stage : stages) {
+            if(stage.getStageIdentifier()[0] == _stageIdentifier[0] && stage.getStageIdentifier()[1] == _stageIdentifier[1]) {
+                return(stage);
+            }
+        }
+
+        return(null);
+
+    }
+
+
 
     /**
      * Get current stage stage
@@ -111,13 +130,6 @@ public class StageTree implements Listener{
         return(trackingStage);
     }
 
-    /**
-     * get current tracking stage
-     * @return 
-     */
-    public Stage getCurrentStage() {
-        return(trackingStage);
-    }
     private String branch(Stage base, ArrayList<Stage> alreadyBranched) {
         String s = "";
 

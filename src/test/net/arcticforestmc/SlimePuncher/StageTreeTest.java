@@ -9,7 +9,7 @@ import net.arcticforestmc.SlimePuncher.Base.StageTree;
 
 
 public class StageTreeTest {
-
+/*
     @Mock
     SlimePuncher slimepuncher;
     GamePlayer gameplayer;
@@ -17,5 +17,5 @@ public class StageTreeTest {
     @Test
     public void test() {
        System.out.println(new StageTree(slimepuncher, gameplayer).generateDebugTreeGraph());
-    }
+    }*/
 }
