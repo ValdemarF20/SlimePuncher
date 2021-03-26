@@ -10,6 +10,11 @@ repositories {
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
+    maven {
+        name = 'enginehub-maven'
+        url = 'https://maven.enginehub.org/repo/'
+    }
+
 }
 
 sourceSets {
