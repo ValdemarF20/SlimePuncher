@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import net.arcticforestmc.SlimePuncher.Listeners.MobDeathListener;
 import org.bukkit.event.Listener;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
@@ -61,7 +62,7 @@ public class StageTree implements Listener{
         
         //Registers the interaction event
         plugin.getServer().getPluginManager().registerEvents(new StageTreeListener(owner), plugin);
-
+        plugin.getServer().getPluginManager().registerEvents(new MobDeathListener(), plugin);
     }
 
     /**

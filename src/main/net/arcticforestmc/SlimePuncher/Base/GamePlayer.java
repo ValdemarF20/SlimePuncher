@@ -27,6 +27,7 @@ public class GamePlayer implements Listener{
      * @param player
      * @param plugin
      */
+
     public GamePlayer(Player player, SlimePuncher plugin) {
         owner = player;
         

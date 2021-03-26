@@ -3,6 +3,7 @@ package net.arcticforestmc.SlimePuncher.Stages;
 import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
@@ -111,5 +112,6 @@ public abstract class Stage {
     //EVENTS:
 
     public void onInteractEvent(PlayerInteractEvent e) {}
+    public void onMobDeath(EntityDeathEvent e) {}
     
 }
