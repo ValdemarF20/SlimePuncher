@@ -1,10 +1,12 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -97,7 +99,8 @@ public class Stage0_0_SlimePuncher extends Stage {
 
             if(Math.round(Math.random() * 10) == 1 && mobsAlive <= 5){
                 World world = gamePlayerObject.getOwner().getWorld();
-                world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
+                Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
+                zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(2);
                 mobsAlive++;
             }
         }
