@@ -39,7 +39,8 @@ public class GamePlayer implements Listener{
 
         }
         else {
-            stageTree = new StageTree(plugin, this);
+            //set tracking stage identifier to root:
+            stageTree = new StageTree(plugin, this, "0_0");
         }
 
     }

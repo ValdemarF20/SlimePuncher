@@ -68,7 +68,7 @@ public class DataManager {
                 //it doesnt so write NEW to SQL
                 statement.executeUpdate(String.format(
                     "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,ARENAXTILE) VALUES ('%s', '%s'. %d. %d, %d)",
-                    player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits()));
+                    player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits(), player.getArenaXTile()));
         
                 }
                 catch(SQLException e) {

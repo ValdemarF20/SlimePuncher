@@ -9,13 +9,13 @@ import net.arcticforestmc.SlimePuncher.Base.StageTree;
 
 
 public class StageTreeTest {
-
+/*
     @Mock
     SlimePuncher slimepuncher;
     GamePlayer gameplayer;
 
-    //@Test
-    //public void test() {
-      // System.out.println(new StageTree(slimepuncher, gameplayer).generateDebugTreeGraph());
-    //}
+    @Test
+    public void test() {
+       System.out.println(new StageTree(slimepuncher, gameplayer).generateDebugTreeGraph());
+    }*/
 }
