@@ -1,5 +1,8 @@
 package net.arcticforestmc.SlimePuncher;
 
+
+import com.sk89q.worldedit.WorldEdit;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,10 +18,21 @@ public class SlimePuncher extends JavaPlugin {
 
     public static DataManager dataManager;
 
+    public static WorldEdit worldEdit;
+
     @Override
     public void onEnable() {
+        
         yamlDataHandler = new YamlDataHandler(this);
         dataManager = new DataManager(this);
+        
+        if(Bukkit.getPluginManager().getPlugin("WorldEdit")==null) {
+            System.out.println("WorldEdit MUST Be installed");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+        
+        worldEdit = WorldEdit.getInstance();
+        
     } 
 
     @Override
