@@ -2,6 +2,7 @@ package net.arcticforestmc.SlimePuncher.Stages;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -82,14 +83,13 @@ public class Stage0_0_SlimePuncher extends Stage {
         int arenaFloorRelativeX = 0;
         int arenaFloorRelativeY = 105;
         int arenaFloorRelativeZ = 0;
-        float radius = 25;                //radius in blocks
-        float stepSize = 1 / radius;          //size of each step
+        float radius = 25;                  //radius in blocks
+        float stepSize = 1 / radius;        //size of each step
 
         for(double step = 0; step<circleRadians; step+=stepSize) {
             int x = (int) Math.round(Math.cos(step) * radius) + gameObject.getStageTile() + arenaFloorRelativeX;
             int z = (int) Math.round(Math.sin(step) * radius) + arenaFloorRelativeZ;
 
-            //test set blocks:
             if(Math.round(Math.random() * 10) == 1 && mobsAlive <= 5){
                 World world = gameObject.getOwner().getWorld();
                 world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
@@ -100,7 +100,10 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     @Override
     public void onMobDeath(EntityDeathEvent e){
-
+        EntityType entity = e.getEntityType();
+        if(entity.equals(EntityType.ZOMBIE)) {
+            mobsAlive -= 1;
+        }
     }
 
     @Override

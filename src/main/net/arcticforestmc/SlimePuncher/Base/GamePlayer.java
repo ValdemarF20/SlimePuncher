@@ -11,7 +11,7 @@ public class GamePlayer implements Listener{
     private int stageTile;          //X-coordinate of player's stage tile(start)
     private int bits;               //How many bits does the player currently have
     private int xpBits;             //Used for leveling, it will not be deducted when spent and under certain circumstances it will not go up by the same amount as bits.
-    private int ownerLevel;        //what level is the player on (More than one player level might be required for stageLevel up)
+    private int ownerLevel;         //what level is the player on (More than one player level might be required for stageLevel up)
     private StageTree stageTree;    //This players stageTree
     private Player owner;
 
