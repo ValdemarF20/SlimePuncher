@@ -6,24 +6,27 @@ public class SerializedGamePlayer {
     public int bits;
     public int xpBits;
     public String trackingStageIdentifier;
-    public int stageTile;
+    public int stageXTile;
+    public int stageZTile;
     public String ownerUUID;
 
     
     public SerializedGamePlayer(GamePlayer source) {
         bits = source.getBits();
         xpBits = source.getXpBits();
-        stageTile = source.getStageTile();
+        stageXTile = source.getStageXTile();
+        stageZTile = source.getStageZTile();
         ownerUUID = source.getOwner().getUniqueId().toString();
         trackingStageIdentifier = source.getStageTree().getTracking().getStageIdentifier()[0]+
                                   "_"+
                                   source.getStageTree().getTracking().getStageIdentifier()[1];
     }
 
-    public SerializedGamePlayer(String ownerUUID, String trackingStageIdentifier, int bits, int xpBits, int stageTile) {
+    public SerializedGamePlayer(String ownerUUID, String trackingStageIdentifier, int bits, int xpBits, int stageXTile, int stageZTile) {
         this.bits = bits;
         this.xpBits = xpBits;
-        this.stageTile = stageTile;
+        this.stageXTile = stageXTile;
+        this.stageZTile = stageZTile;
         this.ownerUUID = ownerUUID;
         this.trackingStageIdentifier = trackingStageIdentifier; 
     }

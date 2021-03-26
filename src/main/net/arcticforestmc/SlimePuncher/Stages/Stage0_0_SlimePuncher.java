@@ -54,7 +54,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         int slimeBlockRelativeZ = 0;
         
         Player player = e.getPlayer();
-        Location slimeLocation = new Location(player.getWorld(), gameObject.getStageTile() + slimeBlockRelativeX, slimeBlockRelativeY, slimeBlockRelativeZ);   
+        Location slimeLocation = new Location(player.getWorld(), gameObject.getStageXTile() + slimeBlockRelativeX, slimeBlockRelativeY, gameObject.getStageZTile() + slimeBlockRelativeZ);
         final Block clickedBlock = e.getClickedBlock();
         if(clickedBlock!=null) {
             Location blockLocation = clickedBlock.getLocation();
@@ -93,8 +93,8 @@ public class Stage0_0_SlimePuncher extends Stage {
         float stepSize = 1 / radius;        //size of each step
 
         for(double step = 0; step<circleRadians; step+=stepSize) {
-            int x = (int) Math.round(Math.cos(step) * radius) + gameObject.getStageTile() + arenaFloorRelativeX;
-            int z = (int) Math.round(Math.sin(step) * radius) + arenaFloorRelativeZ;
+            int x = (int) Math.round(Math.cos(step) * radius) + gameObject.getStageXTile() + arenaFloorRelativeX;
+            int z = (int) Math.round(Math.sin(step) * radius) + gameObject.getStageZTile() + arenaFloorRelativeZ;
 
             if(Math.round(Math.random() * 10) == 1 && mobsAlive <= 5){
                 World world = gameObject.getOwner().getWorld();
@@ -112,8 +112,8 @@ public class Stage0_0_SlimePuncher extends Stage {
         EntityDamageEvent damageEvent = entity.getLastDamageCause();
 
         if(damageEvent == null) return;
-        if(!(entityLocationX < owner.getStageTile() + GamePlayer.sizeX) && !(entityLocationX > owner.getStageTile())) return;
-        if(!(entityLocationZ < owner.getStageTile() + GamePlayer.sizeZ) && !(entityLocationZ > owner.getStageTile())) return;
+        if(!(entityLocationX < owner.getStageXTile() + GamePlayer.sizeX) && !(entityLocationX > owner.getStageXTile())) return;
+        if(!(entityLocationZ < owner.getStageXTile() + GamePlayer.sizeZ) && !(entityLocationZ > owner.getStageXTile())) return;
 
         if(entity.getType().equals(EntityType.ZOMBIE)) {
             mobsAlive -= 1;

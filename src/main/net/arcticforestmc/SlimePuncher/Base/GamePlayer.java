@@ -8,7 +8,8 @@ import net.arcticforestmc.SlimePuncher.SlimePuncher;
 
 public class GamePlayer implements Listener{
 
-    private int stageTile;          //X-coordinate of player's stage tile(start)
+    private int stageXTile;         //X-coordinate of player's stage tile(start)
+    private int stageZTile;         //Z-coordinate of player's stage tile(start)
     private int bits;               //How many bits does the player currently have
     private int xpBits;             //Used for leveling, it will not be deducted when spent and under certain circumstances it will not go up by the same amount as bits.
     private int ownerLevel;         //what level is the player on (More than one player level might be required for stageLevel up)
@@ -85,8 +86,12 @@ public class GamePlayer implements Listener{
      * get arena x-coord/stage tile
      * @return
      */
-    public int getStageTile() {
-        return(stageTile);
+    public int getStageXTile() {
+        return(stageXTile);
+    }
+
+    public int getStageZTile() {
+        return(stageXTile);
     }
 
     /**
