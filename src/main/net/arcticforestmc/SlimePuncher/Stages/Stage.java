@@ -101,12 +101,6 @@ public abstract class Stage {
         return(level);
     }
 
-    /**
-     * Get if player can move to next stage
-     * @return
-     */
-    public abstract boolean canProgressStage();
-
 
     //EVENTS:
 

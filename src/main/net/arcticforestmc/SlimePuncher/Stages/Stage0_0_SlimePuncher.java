@@ -75,11 +75,6 @@ public class Stage0_0_SlimePuncher extends Stage {
         }
     }
 
-    @Override
-    public boolean canProgressStage() {
-        return (gamePlayerObject.getOwnerLevel()>=5);
-    }
-
     /**
      * Go around the arena edge once and spawn enemies randomly
      */

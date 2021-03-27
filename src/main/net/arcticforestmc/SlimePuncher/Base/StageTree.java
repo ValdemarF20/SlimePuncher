@@ -96,12 +96,20 @@ public class StageTree implements Listener{
 
     }
 
+    /**
+     * Use this when the player should progress, this will interface with stage generation, once this method is triggered a wall will be closed behind the player, the stage generator will create the next stage, and the wall to the next stage will be opened.
+     * @param childStage this is the child stage number that the player chose.
+     */
+    public void progressTracking(int childStage) {
+
+    }
+
 
     /**
      * set the current stage based on string(used for loading)
-     * @param stageIdentifier
+     * @param stage
      */
-    public void setTracking(Stage stage) {
+    private void setTracking(Stage stage) {
         trackingStage = stage;
     }
 
