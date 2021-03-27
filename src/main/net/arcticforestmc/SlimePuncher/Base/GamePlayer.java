@@ -41,6 +41,8 @@ public class GamePlayer implements Listener{
         else {
             //set tracking stage identifier to root:
             stageTree = new StageTree(plugin, this, "0_0");
+            //new player so set new arenaXTile
+            arenaXTile = getNewPlayerXArenaLocation();
         }
 
     }
@@ -61,6 +63,8 @@ public class GamePlayer implements Listener{
     public Player getOwner(){
         return owner;
     }
+
+
 
     /**
      * Load player's stage/data files(only will work if player has played before)
@@ -94,6 +98,15 @@ public class GamePlayer implements Listener{
     public int reserveStageTile(){
         int i = 1;
         return(i);
+    }
+
+    /**
+     * Get new X arena location for a player who hasnt played before
+     * @return
+     */
+    public int getNewPlayerXArenaLocation() {
+        //return(SlimePuncher.dataManager.fetchCurrentlyRegisteredPlayers()*SlimePuncher.sizeX);
+        return(0);
     }
 
     /**

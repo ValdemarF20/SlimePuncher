@@ -27,11 +27,6 @@ public class Stage1_0_Test extends Stage {
         
     }
 
-    @Override
-    public boolean canProgressStage() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
     @Override
     public void gameTick() {
