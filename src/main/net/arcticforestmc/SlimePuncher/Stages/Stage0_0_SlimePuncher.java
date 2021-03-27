@@ -47,6 +47,11 @@ public class Stage0_0_SlimePuncher extends Stage {
         
     }
 
+    @Override
+    public int[] getStageRelativeSpawnCoords() {
+        return new int[]{0, 0, 0};
+    }
+
 
     @Override
     public void onInteractEvent(PlayerInteractEvent e){  

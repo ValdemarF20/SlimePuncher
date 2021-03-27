@@ -90,6 +90,8 @@ public abstract class Stage {
      */
     public abstract void ownerJoinedArena();
 
+    public abstract int[] getStageRelativeSpawnCoords();
+
 
     //EVENTS:
 

@@ -25,7 +25,12 @@ public class Stage3_2_Test extends Stage {
         // TODO Auto-generated method stub
         
     }
-    
+
+    @Override
+    public int[] getStageRelativeSpawnCoords() {
+        return new int[]{0, 0, 0};
+    }
+
     @Override
     public void gameTick() {
         // TODO Auto-generated method stub
