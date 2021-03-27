@@ -60,14 +60,14 @@ public class DataManager {
 
                 if(loadGamePlayerIfCan(player.getOwner().getUniqueId())!=null) { //does the uuid exist in database
                     //UPDATE SQL
-                    statement.executeUpdate(String.format("UPDATE SlimePuncher SET TRACKINGSTAGE='%s', BITS=%d, XPBITS=%d, ARENAXTILE=%d WHERE UUID='%s'",
+                    statement.executeUpdate(String.format("UPDATE SlimePuncher SET TRACKINGSTAGE='%s', BITS=%d, XPBITS=%d, ARENAXTILE=%d WHERE UUID='%s';",
                     player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1],  player.getBits(),  player.getXpBits(),  player.getArenaXTile(), player.getOwner().getUniqueId().toString()));
                     return;
                 }
 
                 //it doesnt so write NEW to SQL
                 statement.executeUpdate(String.format(
-                    "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,ARENAXTILE) VALUES ('%s', '%s'. %d. %d, %d)",
+                    "INSERT INTO SlimePuncher (UUID,TRACKINGSTAGE,BITS,XPBITS,ARENAXTILE) VALUES ('%s', '%s'. %d. %d, %d);",
                     player.getOwner().getUniqueId().toString(), player.getStageTree().getTracking().getStageIdentifier()[0]+"_"+player.getStageTree().getTracking().getStageIdentifier()[1], player.getBits(), player.getXpBits(), player.getArenaXTile()));
         
                 }
@@ -89,6 +89,16 @@ public class DataManager {
         connection = DriverManager.getConnection("jdbc:mysql://"
                 + this.host + ":" + this.port + "/" + this.database,
                 this.username, this.password);
+    }
+
+    public int fetchCurrentlyRegisteredPlayers() {
+        int count = 0;
+        ResultSet r = statement.executeQuery("SELECT * from SlimePuncher;");
+        for(r.next()) {
+            count++;
+        }
+
+        return(count);
     }
 
 
