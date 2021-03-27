@@ -93,11 +93,17 @@ public class DataManager {
 
     public int fetchCurrentlyRegisteredPlayers() {
         int count = 0;
-        ResultSet r = statement.executeQuery("SELECT * from SlimePuncher;");
-        for(r.next()) {
-            count++;
-        }
+        ResultSet r;
+        try {
+            r = statement.executeQuery("SELECT * from SlimePuncher;");
+            while(r.next()) {
+                count++;
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+   
         return(count);
     }
 
