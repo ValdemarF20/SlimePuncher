@@ -91,17 +91,6 @@ public abstract class Stage {
     public abstract void ownerJoinedArena();
 
 
-    /**
-     * Calculate current player level based on xpBits
-     * @param xpBits
-     * @return
-     */
-    public int calculateCurrentPlayerLevel(int xpBits) {
-        int level = xpBits / 10;
-        return(level);
-    }
-
-
     //EVENTS:
 
     public void onInteractEvent(PlayerInteractEvent e) {}

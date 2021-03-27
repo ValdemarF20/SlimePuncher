@@ -12,7 +12,6 @@ public class GamePlayer implements Listener{
     private int arenaXTile;         //X-coordinate of player's arena tile(start)
     private int bits;               //How many bits does the player currently have
     private int xpBits;             //Used for leveling, it will not be deducted when spent and under certain circumstances it will not go up by the same amount as bits.
-    private int ownerLevel;         //what level is the player on (More than one player level might be required for stageLevel up)
     private StageTree stageTree;    //This players stageTree
     private Player owner;           //The player
 
@@ -115,11 +114,11 @@ public class GamePlayer implements Listener{
     }
 
     /**
-     * Get level of player, NOT the level of the stage the player is on
+     * Get level of player, NOT the level of the stage the player is on, this is calculated based on xpBits
      * @return
      */
     public int getOwnerLevel() {
-        return(ownerLevel);
+        return(xpBits/10);
     }
 
     /**
