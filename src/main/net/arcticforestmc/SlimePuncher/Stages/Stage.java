@@ -90,6 +90,10 @@ public abstract class Stage {
      */
     public abstract void ownerJoinedArena();
 
+    /**
+     * Gets an index of spawn location depending on stage
+     * @return stage spawn location
+     */
     public abstract int[] getStageRelativeSpawnCoords();
 
 
