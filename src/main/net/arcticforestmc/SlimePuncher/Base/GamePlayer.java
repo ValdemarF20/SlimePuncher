@@ -78,11 +78,25 @@ public class GamePlayer implements Listener{
     }
 
     public void addBits(int amount){
+        bits+=amount;
+    }
+    public void addXpBits(int amount){
         // TODO: Check if player will level up before adding bits
         int multiplier = 1;
-        bits+=amount;
         xpBits = xpBits + (amount * multiplier);
-        //test
+    }
+
+    public void removeBits(int amount){
+        bits-=amount;
+    }
+
+    public void removeXpBits(int amount){
+        xpBits-=amount;
+    }
+
+    public int reserveStageTile(){
+        int i = 1;
+        return(i);
     }
 
     /**
