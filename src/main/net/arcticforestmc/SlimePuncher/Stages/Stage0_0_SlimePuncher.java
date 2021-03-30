@@ -163,4 +163,12 @@ public class Stage0_0_SlimePuncher extends Stage {
         // TODO Auto-generated method stub
         spawnEnemyTick();
     }
+
+
+
+    @Override
+    public int[][][] nextStageTunnelRelativeBounds() {
+        //1 tunnel because only 1 next stage.
+        return new int[][][]{{{0,0},{0,0}}};
+    }
 }

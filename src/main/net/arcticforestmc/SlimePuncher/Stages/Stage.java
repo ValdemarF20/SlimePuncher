@@ -96,6 +96,12 @@ public abstract class Stage {
      */
     public abstract int[] getStageRelativeSpawnCoords();
 
+    /**
+     * this defines the tunnels bounds that lead to the next stage.
+     * @return the bounds format goes as follows [ [[x,z],[x,z]], [[x,z],[x,z]] ]    what you are defining here are the x,z coordinates that define a line at which when the player crosses, the tunnel should build the next stage and take the player to it.
+     */
+    public abstract int[][][] nextStageTunnelRelativeBounds();
+
 
     //EVENTS:
 

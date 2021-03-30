@@ -36,4 +36,10 @@ public class Stage5_0_Test extends Stage {
         // TODO Auto-generated method stub
         
     }
+
+
+    @Override
+    public int[][][] nextStageTunnelRelativeBounds() {
+        return new int[][][]{{{}}};
+    }
 }
