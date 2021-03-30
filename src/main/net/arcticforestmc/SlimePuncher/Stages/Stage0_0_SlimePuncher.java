@@ -16,6 +16,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Stage0_0_SlimePuncher extends Stage {
     
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
@@ -84,28 +88,50 @@ public class Stage0_0_SlimePuncher extends Stage {
     /**
      * Go around the arena edge once and spawn enemies randomly
      */
-    private int mobsAlive = 0;
+    private static int mobsAlive = 0;
     private void spawnEnemyTick() {
+
+        if(!(mobsAlive < 5)) return;
+
         final float circleRadians = (float) (2.0F*Math.PI); //Radians in a circle idk google: https://socratic.org/questions/how-do-you-convert-360-degrees-to-radianss
 
         //requires configuration
         int arenaFloorRelativeX = 0;
         int arenaFloorRelativeY = 105;
         int arenaFloorRelativeZ = 0;
-        float radius = 25;                  //radius in blocks
+        float radius = 10;                  //radius in blocks
         float stepSize = 1 / radius;        //size of each step <- multiplicative inverse
+        World world = gamePlayerObject.getOwner().getWorld();
 
         for(double step = 0; step<circleRadians; step+=stepSize) {
-            int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
-            int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
+            if(Math.round(Math.random() * 50) == 1) {
+                int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
+                int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
 
-            if(Math.round(Math.random() * 10) == 1 && mobsAlive <= 5){
-                World world = gamePlayerObject.getOwner().getWorld();
-                Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
-                zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(2);
-                mobsAlive++;
+                if(mobsAlive < 5) {
+                    Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
+                    applyAttribute(zombie);
+                    mobsAlive++;
+                }
             }
         }
+    }
+
+    public void applyAttribute(Zombie zombie){
+        int randomNum = /*(int) Math.round(Math.random() * 1)*/ 1;
+
+        switch(randomNum){
+            case 1:
+                fastZombie(zombie);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void fastZombie(Zombie zombie){
+        zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
+        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.5);
     }
 
     @Override
@@ -126,6 +152,10 @@ public class Stage0_0_SlimePuncher extends Stage {
                 gamePlayerObject.addXpBits(1);
             }
         }
+    }
+
+    public static int getMobsAlive(){
+        return mobsAlive;
     }
 
     @Override

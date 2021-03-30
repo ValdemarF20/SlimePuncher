@@ -3,6 +3,7 @@ package net.arcticforestmc.SlimePuncher;
 
 import com.sk89q.worldedit.WorldEdit;
 
+import net.arcticforestmc.SlimePuncher.Stages.Stage0_0_SlimePuncher;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
