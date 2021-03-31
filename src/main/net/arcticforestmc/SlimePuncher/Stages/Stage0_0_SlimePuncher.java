@@ -145,11 +145,13 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     public void shooterZombie(Zombie zombie){
         Player target = gamePlayerObject.getOwner();
+        Vector targetVelocity = target.getVelocity();
+        int customSpeed = 3;
 
         zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(2);
         zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
 
-        zombie.launchProjectile(Snowball.class, target.getLocation().toVector().subtract(zombie.getLocation().toVector()));
+        zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
     }
 
     @Override
