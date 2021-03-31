@@ -12,11 +12,6 @@ import org.bukkit.inventory.EquipmentSlot;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
-import org.bukkit.util.Vector;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class Stage0_0_SlimePuncher extends Stage {
     
@@ -145,7 +140,6 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     public void shooterZombie(Zombie zombie){
         Player target = gamePlayerObject.getOwner();
-        Vector targetVelocity = target.getVelocity();
         int customSpeed = 3;
 
         zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(2);
