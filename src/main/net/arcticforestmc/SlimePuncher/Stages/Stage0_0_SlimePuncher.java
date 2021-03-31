@@ -3,10 +3,7 @@ package net.arcticforestmc.SlimePuncher.Stages;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -15,6 +12,7 @@ import org.bukkit.inventory.EquipmentSlot;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,11 +116,17 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     public void applyAttribute(Zombie zombie){
-        int randomNum = /*(int) Math.round(Math.random() * 1)*/ 1;
+        int randomNum = (int) Math.round(Math.random() * 3);
 
         switch(randomNum){
             case 1:
                 fastZombie(zombie);
+                break;
+            case 2:
+                tankZombie(zombie);
+                break;
+            case 3:
+                shooterZombie(zombie);
                 break;
             default:
                 break;
@@ -131,7 +135,21 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     public void fastZombie(Zombie zombie){
         zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
-        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.5);
+        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.3);
+    }
+
+    public void tankZombie(Zombie zombie){
+        zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(4);
+        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
+    }
+
+    public void shooterZombie(Zombie zombie){
+        Player target = gamePlayerObject.getOwner();
+
+        zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(2);
+        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
+
+        zombie.launchProjectile(Snowball.class, target.getLocation().toVector().subtract(zombie.getLocation().toVector()));
     }
 
     @Override
