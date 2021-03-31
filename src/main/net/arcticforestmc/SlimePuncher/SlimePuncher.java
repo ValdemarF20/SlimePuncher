@@ -3,6 +3,7 @@ package net.arcticforestmc.SlimePuncher;
 
 import com.sk89q.worldedit.WorldEdit;
 
+import net.arcticforestmc.SlimePuncher.Commands.MobsAlive;
 import net.arcticforestmc.SlimePuncher.Stages.Stage0_0_SlimePuncher;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -21,6 +22,8 @@ public class SlimePuncher extends JavaPlugin {
 
     public static WorldEdit worldEdit;
 
+    public GamePlayer test;
+
     //SIZE OF ARENAS:
     public static int sizeX = 100;
     public static int sizeZ = 100;
@@ -30,6 +33,8 @@ public class SlimePuncher extends JavaPlugin {
         
         yamlDataHandler = new YamlDataHandler(this);
         dataManager = new DataManager(this);
+
+        this.getCommand("mobsalive").setExecutor(new MobsAlive((Stage0_0_SlimePuncher) test.getStageTree().getStageFromIdentifier("0_0"), test, this));
         
         if(Bukkit.getPluginManager().getPlugin("WorldEdit")==null) {
             System.out.println("WorldEdit MUST Be installed");
@@ -48,7 +53,7 @@ public class SlimePuncher extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String Label, String[] args){
         if(cmd.getName().equalsIgnoreCase("testdingdong")) {
-            GamePlayer test = new GamePlayer(Bukkit.getPlayer(args[0]), this); 
+            test = new GamePlayer(Bukkit.getPlayer(args[0]), this);
 
             //create a handler class for all the gamerplayers, this is fine for now tho
             
@@ -58,6 +63,11 @@ public class SlimePuncher extends JavaPlugin {
                     test.gameTick();
                 }
             }.runTaskTimer(this, 0, 0);
+
+            Stage0_0_SlimePuncher slimePuncherStage = (Stage0_0_SlimePuncher) test.getStageTree().getStageFromIdentifier("0_0");
+            int mobsAlive = slimePuncherStage.getMobsAlive();
+            sender.sendMessage(String.valueOf(mobsAlive));
+
         }
         return(true);
     }

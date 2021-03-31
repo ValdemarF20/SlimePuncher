@@ -96,9 +96,9 @@ public class Stage0_0_SlimePuncher extends Stage {
         final float circleRadians = (float) (2.0F*Math.PI); //Radians in a circle idk google: https://socratic.org/questions/how-do-you-convert-360-degrees-to-radianss
 
         //requires configuration
-        int arenaFloorRelativeX = 0;
-        int arenaFloorRelativeY = 105;
-        int arenaFloorRelativeZ = 0;
+        int arenaFloorRelativeX = 38;       //arenaFloorRelative decides where the mobs are spawning
+        int arenaFloorRelativeY = 6;
+        int arenaFloorRelativeZ = 38;
         float radius = 10;                  //radius in blocks
         float stepSize = 1 / radius;        //size of each step <- multiplicative inverse
         World world = gamePlayerObject.getOwner().getWorld();
@@ -154,7 +154,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         }
     }
 
-    public static int getMobsAlive(){
+    public int getMobsAlive(){
         return mobsAlive;
     }
 

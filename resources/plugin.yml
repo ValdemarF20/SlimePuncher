@@ -1,7 +1,10 @@
 main: net.arcticforestmc.SlimePuncher.SlimePuncher
 name: "SlimePuncher"
 version: 0.0.0-ALPHA
-authors: ["Connor Michalec", ""]
+authors: ["Connor Michalec", "Valdemar Foster"]
 commands:
   testdingdong:
+
+  mobsAlive:
+    description: Gets the amount of zombies alive.
 depends: ["WorldEdit"]
