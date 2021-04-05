@@ -148,9 +148,11 @@ public class Stage0_0_SlimePuncher extends Stage {
         new BukkitRunnable(){
             @Override
             public void run() {
-                Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                arrow.setSilent(true);
-                entityHider.hideEntity(target, arrow);
+                if (!(zombie.isDead())) {
+                    Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
+                    arrow.setSilent(true);
+                    entityHider.hideEntity(target, arrow);
+                }
             }
         }.runTaskTimer(plugin, 80, 80);
     }

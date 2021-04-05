@@ -34,10 +34,11 @@ public class SlimePuncher extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        
         yamlDataHandler = new YamlDataHandler(this);
         dataManager = new DataManager(this);
         entityHider = new EntityHider(this, BLACKLIST);
+
+        System.out.println(entityHider);
         
         if(Bukkit.getPluginManager().getPlugin("WorldEdit")==null) {
             System.out.println("WorldEdit MUST Be installed");
