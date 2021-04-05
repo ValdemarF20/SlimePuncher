@@ -1,5 +1,6 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
+import net.arcticforestmc.SlimePuncher.Base.EntityHider;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -12,21 +13,16 @@ import org.bukkit.inventory.EquipmentSlot;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Stage0_0_SlimePuncher extends Stage {
+    private final EntityHider entityHider;
     
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
+        this.entityHider = plugin.getEntityHider();
         //TODO Auto-generated constructor stub
-
-
-
-
-
-        
     }
-
-    
 
     @Override
     public int[] getStageIdentifier() {
@@ -111,21 +107,25 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     public void applyAttribute(Zombie zombie){
-        int randomNum = (int) Math.round(Math.random() * 3);
+        shooterZombie(zombie);
+        /*
+        int randomNum = (int) Math.round(Math.random() * 1);
 
         switch(randomNum){
             case 1:
-                fastZombie(zombie);
+                shooterZombie(zombie);
                 break;
             case 2:
                 tankZombie(zombie);
                 break;
             case 3:
-                shooterZombie(zombie);
+                fastZombie(zombie);
                 break;
             default:
                 break;
         }
+
+         */
     }
 
     public void fastZombie(Zombie zombie){
@@ -145,11 +145,21 @@ public class Stage0_0_SlimePuncher extends Stage {
         zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(2);
         zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
 
-        zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
+                arrow.setSilent(true);
+                entityHider.hideEntity(target, arrow);
+            }
+        }.runTaskTimer(plugin, 80, 80);
     }
 
     @Override
     public void onEntityDeathEvent(EntityDeathEvent e){
+
+        System.out.println("Inside EntityDeathEvent");
+
         Entity entity = e.getEntity();
         double entityLocationX = entity.getLocation().getX();
         double entityLocationZ = entity.getLocation().getZ();
@@ -159,7 +169,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         if(!(entityLocationX < gamePlayerObject.getArenaXTile() + SlimePuncher.sizeX) && !(entityLocationX > gamePlayerObject.getArenaXTile())) return;
         if(!(entityLocationZ < gamePlayerObject.getArenaXTile() + SlimePuncher.sizeZ) && !(entityLocationZ > gamePlayerObject.getArenaXTile())) return;
 
-        if(entity.getType().equals(EntityType.ZOMBIE)) {
+        if(entity.getType() == EntityType.ZOMBIE) {
             mobsAlive -= 1;
             if (damageEvent.getCause() == (EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
                 gamePlayerObject.addBits(1);

@@ -2,6 +2,7 @@ package net.arcticforestmc.SlimePuncher.Stages;
 
 import java.util.ArrayList;
 
+import net.arcticforestmc.SlimePuncher.Base.EntityHider;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -13,7 +14,6 @@ public abstract class Stage {
     protected ArrayList<Stage> children = new ArrayList<>();
     protected SlimePuncher plugin;
     protected GamePlayer gamePlayerObject;
-
 
 
     /**

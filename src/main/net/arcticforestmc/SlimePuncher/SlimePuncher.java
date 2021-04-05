@@ -3,7 +3,7 @@ package net.arcticforestmc.SlimePuncher;
 
 import com.sk89q.worldedit.WorldEdit;
 
-import net.arcticforestmc.SlimePuncher.Commands.MobsAlive;
+import net.arcticforestmc.SlimePuncher.Base.EntityHider;
 import net.arcticforestmc.SlimePuncher.Stages.Stage0_0_SlimePuncher;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -13,6 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.DataManager;
+
+import static net.arcticforestmc.SlimePuncher.Base.EntityHider.Policy.BLACKLIST;
 
 public class SlimePuncher extends JavaPlugin {
 
@@ -24,6 +26,8 @@ public class SlimePuncher extends JavaPlugin {
 
     public GamePlayer test;
 
+    protected EntityHider entityHider;
+
     //SIZE OF ARENAS:
     public static int sizeX = 100;
     public static int sizeZ = 100;
@@ -33,8 +37,7 @@ public class SlimePuncher extends JavaPlugin {
         
         yamlDataHandler = new YamlDataHandler(this);
         dataManager = new DataManager(this);
-
-        this.getCommand("mobsalive").setExecutor(new MobsAlive((Stage0_0_SlimePuncher) test.getStageTree().getStageFromIdentifier("0_0"), test, this));
+        entityHider = new EntityHider(this, BLACKLIST);
         
         if(Bukkit.getPluginManager().getPlugin("WorldEdit")==null) {
             System.out.println("WorldEdit MUST Be installed");
@@ -70,5 +73,8 @@ public class SlimePuncher extends JavaPlugin {
 
         }
         return(true);
+    }
+    public EntityHider getEntityHider(){
+        return entityHider;
     }
 }
