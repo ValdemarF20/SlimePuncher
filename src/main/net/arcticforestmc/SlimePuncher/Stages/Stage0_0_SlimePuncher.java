@@ -92,18 +92,23 @@ public class Stage0_0_SlimePuncher extends Stage {
         float stepSize = 1 / radius;        //size of each step <- multiplicative inverse
         World world = gamePlayerObject.getOwner().getWorld();
 
-        for(double step = 0; step<circleRadians; step+=stepSize) {
-            if(Math.round(Math.random() * 50) == 1) {
-                int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
-                int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                for(double step = 0; step<circleRadians; step+=stepSize) {
+                    if(Math.round(Math.random() * 50) == 1) {
+                        int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
+                        int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
 
-                if(mobsAlive < 5) {
-                    Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
-                    applyAttribute(zombie);
-                    mobsAlive++;
+                        if(mobsAlive < 5) {
+                            Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
+                            applyAttribute(zombie);
+                            mobsAlive++;
+                        }
+                    }
                 }
             }
-        }
+        }.runTaskTimer(plugin, 0, 300);
     }
 
     public void applyAttribute(Zombie zombie){
@@ -148,13 +153,11 @@ public class Stage0_0_SlimePuncher extends Stage {
         new BukkitRunnable(){
             @Override
             public void run() {
-                if (!(zombie.isDead())) {
-                    Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                    arrow.setSilent(true);
-                    entityHider.hideEntity(target, arrow);
-                }
+                Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
+                entityHider.hideEntity(target, arrow);
+                arrow.setSilent(true);
             }
-        }.runTaskTimer(plugin, 80, 80);
+        }.runTaskTimer(plugin, 50, 50);
     }
 
     @Override
