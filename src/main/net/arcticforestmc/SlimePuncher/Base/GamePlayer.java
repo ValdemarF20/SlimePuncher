@@ -10,10 +10,10 @@ import net.arcticforestmc.SlimePuncher.Stages.Stage;
 public class GamePlayer implements Listener{
 
     private int arenaXTile;         //X-coordinate of player's arena tile(start)
-    private int bits;               //How many bits does the player currently have
+    private int bits = 0;               //How many bits does the player currently have
     private int xpBits;             //Used for leveling, it will not be deducted when spent and under certain circumstances it will not go up by the same amount as bits.
     private StageTree stageTree;    //This players stageTree
-    private Player owner;           //The player
+    private final Player owner;           //The player
 
 
 
@@ -52,6 +52,7 @@ public class GamePlayer implements Listener{
      * @return has the player played before.
      */
     public boolean playedBefore(Player player) {
+
         return(false); //TEMPORARY
     }
 

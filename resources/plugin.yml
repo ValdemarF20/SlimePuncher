@@ -4,6 +4,8 @@ version: 0.0.0-ALPHA
 authors: ["Connor Michalec", "Valdemar Foster"]
 commands:
   testdingdong:
+  bits:
+    description: Gets the amount of bits the player has.
 
   mobsAlive:
     description: Gets the amount of zombies alive.

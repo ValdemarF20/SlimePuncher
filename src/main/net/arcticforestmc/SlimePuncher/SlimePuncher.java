@@ -4,7 +4,8 @@ package net.arcticforestmc.SlimePuncher;
 import com.sk89q.worldedit.WorldEdit;
 
 import net.arcticforestmc.SlimePuncher.Base.EntityHider;
-import net.arcticforestmc.SlimePuncher.Stages.Stage0_0_SlimePuncher;
+import net.arcticforestmc.SlimePuncher.Commands.GetBitsCommand;
+import net.arcticforestmc.SlimePuncher.Managers.GamePlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -38,15 +39,10 @@ public class SlimePuncher extends JavaPlugin {
         dataManager = new DataManager(this);
         entityHider = new EntityHider(this, BLACKLIST);
 
-        System.out.println(entityHider);
-        
-        if(Bukkit.getPluginManager().getPlugin("WorldEdit")==null) {
-            System.out.println("WorldEdit MUST Be installed");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
+        this.getCommand("bits").setExecutor(new GetBitsCommand(test));
+        this.getServer().getPluginManager().registerEvents(new GamePlayerManager(this), this);
         
         worldEdit = WorldEdit.getInstance();
-        
     } 
 
     @Override
@@ -60,7 +56,7 @@ public class SlimePuncher extends JavaPlugin {
             test = new GamePlayer(Bukkit.getPlayer(args[0]), this);
 
             //create a handler class for all the gamerplayers, this is fine for now tho
-            
+
             new BukkitRunnable(){
                 @Override
                 public void run() {

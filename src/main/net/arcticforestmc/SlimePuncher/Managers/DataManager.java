@@ -27,7 +27,7 @@ public class DataManager {
 
 
     private ArrayList<GamePlayer> players = new ArrayList<>();
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
 
     public DataManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -36,9 +36,7 @@ public class DataManager {
         try {
             openConnection();
             statement = connection.createStatement();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
