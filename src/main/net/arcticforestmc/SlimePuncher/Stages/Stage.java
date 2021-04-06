@@ -2,7 +2,6 @@ package net.arcticforestmc.SlimePuncher.Stages;
 
 import java.util.ArrayList;
 
-import net.arcticforestmc.SlimePuncher.Base.EntityHider;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -79,10 +78,7 @@ public abstract class Stage {
      * @return if should have children
      */
     public boolean hasChildren() {
-        if(getChildrenDescriptor().length>0) {
-            return(true);
-        }
-        return(false);
+        return getChildrenDescriptor().length > 0;
     }
 
     /**
@@ -107,5 +103,4 @@ public abstract class Stage {
 
     public void onInteractEvent(PlayerInteractEvent e) {}
     public void onEntityDeathEvent(EntityDeathEvent e) {}
-    
 }

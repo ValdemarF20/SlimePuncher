@@ -68,10 +68,6 @@ public class SlimePuncher extends JavaPlugin {
                 }
             }.runTaskTimer(this, 0, 0);
 
-            Stage0_0_SlimePuncher slimePuncherStage = (Stage0_0_SlimePuncher) test.getStageTree().getStageFromIdentifier("0_0");
-            int mobsAlive = slimePuncherStage.getMobsAlive();
-            sender.sendMessage(String.valueOf(mobsAlive));
-
         }
         return(true);
     }

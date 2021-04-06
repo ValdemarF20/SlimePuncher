@@ -15,9 +15,13 @@ import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.SplittableRandom;
+
 public class Stage0_0_SlimePuncher extends Stage {
     private final EntityHider entityHider;
-    
+    private static final SplittableRandom SPLITTABLE_RANDOM = new SplittableRandom();
+
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
         this.entityHider = plugin.getEntityHider();
@@ -47,30 +51,31 @@ public class Stage0_0_SlimePuncher extends Stage {
 
 
     @Override
-    public void onInteractEvent(PlayerInteractEvent e){  
+    public void onInteractEvent(PlayerInteractEvent e){
+        if(!(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND)))return;
+
+        Player player = e.getPlayer();
+
+        final Block clickedBlock = e.getClickedBlock();
+        Location blockLocation = clickedBlock.getLocation();
+
         //Requires configuration
         int slimeBlockRelativeX = 0;
         int slimeBlockRelativeY = 10;
         int slimeBlockRelativeZ = 0;
-        
-        Player player = e.getPlayer();
+
         Location slimeLocation = new Location(player.getWorld(), gamePlayerObject.getArenaXTile() + slimeBlockRelativeX, slimeBlockRelativeY, gamePlayerObject.getStageZTile() + slimeBlockRelativeZ);
-        final Block clickedBlock = e.getClickedBlock();
-        if(clickedBlock!=null) {
-            Location blockLocation = clickedBlock.getLocation();
+
+        if (blockLocation.equals(slimeLocation)) {
 
             double blockX = blockLocation.getX();
             double blockY = blockLocation.getY();
             double blockZ = blockLocation.getZ();
 
-            if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getHand().equals(EquipmentSlot.HAND)) {
-                if (blockLocation.equals(slimeLocation)) {
-                    gamePlayerObject.addBits(1);
-                    gamePlayerObject.addXpBits(1);
-                    player.playSound(player.getLocation(), Sound.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS,10, 3);
-                    player.getWorld().spawnParticle(Particle.SLIME, blockX, blockY, blockZ, 1);
-                }
-            }
+            gamePlayerObject.addBits(1);
+            gamePlayerObject.addXpBits(1);
+            player.playSound(player.getLocation(), Sound.ENTITY_SLIME_SQUISH, SoundCategory.BLOCKS, 10, 3);
+            player.getWorld().spawnParticle(Particle.SLIME, blockX, blockY, blockZ, 1);
         }
     }
 
@@ -108,15 +113,11 @@ public class Stage0_0_SlimePuncher extends Stage {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 0, 300);
+        }.runTaskLater(plugin, 300);
     }
 
     public void applyAttribute(Zombie zombie){
-        shooterZombie(zombie);
-        /*
-        int randomNum = (int) Math.round(Math.random() * 1);
-
-        switch(randomNum){
+        switch(SPLITTABLE_RANDOM.nextInt(1, 3)){
             case 1:
                 shooterZombie(zombie);
                 break;
@@ -129,8 +130,6 @@ public class Stage0_0_SlimePuncher extends Stage {
             default:
                 break;
         }
-
-         */
     }
 
     public void fastZombie(Zombie zombie){
@@ -153,9 +152,11 @@ public class Stage0_0_SlimePuncher extends Stage {
         new BukkitRunnable(){
             @Override
             public void run() {
-                Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                entityHider.hideEntity(target, arrow);
-                arrow.setSilent(true);
+                if(!(zombie.isDead())) {
+                    Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
+                    //entityHider.hideEntity(target, arrow);
+                    arrow.setSilent(true);
+                }
             }
         }.runTaskTimer(plugin, 50, 50);
     }
@@ -176,6 +177,7 @@ public class Stage0_0_SlimePuncher extends Stage {
 
         if(entity.getType() == EntityType.ZOMBIE) {
             mobsAlive -= 1;
+
             if (damageEvent.getCause() == (EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
                 gamePlayerObject.addBits(1);
                 gamePlayerObject.addXpBits(1);
