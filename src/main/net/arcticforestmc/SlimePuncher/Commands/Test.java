@@ -1,0 +1,30 @@
+package net.arcticforestmc.SlimePuncher.Commands;
+
+import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
+import net.arcticforestmc.SlimePuncher.Managers.GamePlayerManager;
+import net.arcticforestmc.SlimePuncher.Stages.Stage0_0_SlimePuncher;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.UUID;
+
+public class Test implements CommandExecutor {
+    private final HashMap<UUID, GamePlayer> gamePlayers = GamePlayerManager.gamePlayers;
+
+    public boolean onCommand(CommandSender sender, Command cmd, String Labels, String[] args){
+        if(!(sender instanceof Player)) return false;
+        Player player = (Player) sender;
+        UUID playerUUID = player.getUniqueId();
+        GamePlayer gamePlayer = gamePlayers.get(playerUUID);
+
+        String bits = String.valueOf(gamePlayer.getBits());
+        gamePlayer.getOwner().sendMessage("Bits: " + bits);
+
+        gamePlayer.getOwner().sendMessage("Mobs alive: " + Stage0_0_SlimePuncher.mobsAlive);
+
+        return true;
+    }
+}

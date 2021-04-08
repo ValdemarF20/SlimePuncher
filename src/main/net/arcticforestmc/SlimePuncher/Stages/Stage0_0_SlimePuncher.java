@@ -13,10 +13,12 @@ import org.bukkit.inventory.EquipmentSlot;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.SplittableRandom;
+import java.util.UUID;
 
 public class Stage0_0_SlimePuncher extends Stage {
     private final EntityHider entityHider;
@@ -82,7 +84,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     /**
      * Go around the arena edge once and spawn enemies randomly
      */
-    private static int mobsAlive = 0;
+    public static int mobsAlive = 0;
     private void spawnEnemyTick() {
 
         if(!(mobsAlive < 5)) return;
@@ -107,7 +109,7 @@ public class Stage0_0_SlimePuncher extends Stage {
 
                         if(mobsAlive < 5) {
                             Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
-                            applyAttribute(zombie);
+                            applyAttributes(zombie);
                             mobsAlive++;
                         }
                     }
@@ -116,7 +118,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         }.runTaskLater(plugin, 300);
     }
 
-    public void applyAttribute(Zombie zombie){
+    public void applyAttributes(Zombie zombie){
         switch(SPLITTABLE_RANDOM.nextInt(1, 3)){
             case 1:
                 shooterZombie(zombie);
@@ -145,8 +147,10 @@ public class Stage0_0_SlimePuncher extends Stage {
     public void shooterZombie(Zombie zombie){
         Player target = gamePlayerObject.getOwner();
         int customSpeed = 3;
+        ItemStack slimeBall = new ItemStack(Material.SLIME_BALL);
 
-        zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(2);
+
+        zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
         zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
 
         new BukkitRunnable(){
@@ -154,7 +158,14 @@ public class Stage0_0_SlimePuncher extends Stage {
             public void run() {
                 if(!(zombie.isDead())) {
                     Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                    //entityHider.hideEntity(target, arrow);
+                    entityHider.hideEntity(target, arrow);
+
+                    ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
+
+                    armorStand.setVisible(false);
+                    armorStand.setItemInHand(slimeBall);
+
+                    arrow.addPassenger(armorStand);
                     arrow.setSilent(true);
                 }
             }
@@ -185,10 +196,6 @@ public class Stage0_0_SlimePuncher extends Stage {
         }
     }
 
-    public int getMobsAlive(){
-        return mobsAlive;
-    }
-
     @Override
     public void gameTick() {
         // TODO Auto-generated method stub
@@ -201,5 +208,9 @@ public class Stage0_0_SlimePuncher extends Stage {
     public int[][][] nextStageTunnelRelativeBounds() {
         //1 tunnel because only 1 next stage.
         return new int[][][]{{{0,0},{0,0}}};
+    }
+
+    public void setMobsAlive(int i){
+        mobsAlive = i;
     }
 }

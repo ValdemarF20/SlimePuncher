@@ -4,16 +4,17 @@ package net.arcticforestmc.SlimePuncher;
 import com.sk89q.worldedit.WorldEdit;
 
 import net.arcticforestmc.SlimePuncher.Base.EntityHider;
-import net.arcticforestmc.SlimePuncher.Commands.GetBitsCommand;
+import net.arcticforestmc.SlimePuncher.Base.StageTree;
+import net.arcticforestmc.SlimePuncher.Commands.EnableGamePlayer;
+import net.arcticforestmc.SlimePuncher.Commands.SetMobsAlive;
+import net.arcticforestmc.SlimePuncher.Commands.Test;
+import net.arcticforestmc.SlimePuncher.Commands.DisableGamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.GamePlayerManager;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.DataManager;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import static net.arcticforestmc.SlimePuncher.Base.EntityHider.Policy.BLACKLIST;
 
@@ -29,6 +30,10 @@ public class SlimePuncher extends JavaPlugin {
 
     protected EntityHider entityHider;
 
+    protected GamePlayerManager gamePlayerManager;
+
+    protected StageTree stageTree;
+
     //SIZE OF ARENAS:
     public static int sizeX = 100;
     public static int sizeZ = 100;
@@ -38,35 +43,38 @@ public class SlimePuncher extends JavaPlugin {
         yamlDataHandler = new YamlDataHandler(this);
         dataManager = new DataManager(this);
         entityHider = new EntityHider(this, BLACKLIST);
+        gamePlayerManager = new GamePlayerManager(this);
 
-        this.getCommand("bits").setExecutor(new GetBitsCommand(test));
+
+        this.getCommand("test").setExecutor(new Test());
+        this.getCommand("disablegameplayer").setExecutor(new DisableGamePlayer(this));
+        this.getCommand("enablegameplayer").setExecutor(new EnableGamePlayer(this));
+        this.getCommand("setmobsalive").setExecutor(new SetMobsAlive());
+
         this.getServer().getPluginManager().registerEvents(new GamePlayerManager(this), this);
         
         worldEdit = WorldEdit.getInstance();
-    } 
+        //This is in onEnable()
+        gamePlayerHandler();
+    }
+
+    public void gamePlayerHandler(){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (GamePlayer gp :
+                        GamePlayerManager.gamePlayers.values()) {
+                    gp.gameTick();
+                }
+            }
+        }.runTaskTimer(this, 1, 1);
+    }
 
     @Override
     public void onDisable() {
         //dataManager.update();
     }
-    
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String Label, String[] args){
-        if(cmd.getName().equalsIgnoreCase("testdingdong")) {
-            test = new GamePlayer(Bukkit.getPlayer(args[0]), this);
 
-            //create a handler class for all the gamerplayers, this is fine for now tho
-
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    test.gameTick();
-                }
-            }.runTaskTimer(this, 0, 0);
-
-        }
-        return(true);
-    }
     public EntityHider getEntityHider(){
         return entityHider;
     }

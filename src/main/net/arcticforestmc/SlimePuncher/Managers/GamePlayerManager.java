@@ -24,20 +24,13 @@ public class GamePlayerManager implements Listener {
     public static HashMap<UUID, GamePlayer> gamePlayers = new HashMap<>();
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e){
+    public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
-        if(!gamePlayers.containsKey(e.getPlayer().getUniqueId())){
+        if (!gamePlayers.containsKey(e.getPlayer().getUniqueId())) {
 
             GamePlayer obj = new GamePlayer(player, slimePuncher);
             gamePlayers.put(player.getUniqueId(), obj);
-
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    obj.gameTick();
-                }
-            }.runTaskTimer(slimePuncher, 0, 0);
 
         }
     }

@@ -10,7 +10,7 @@ import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 
 
 public class StageEventDispatcher implements Listener{
-    private GamePlayer gamePlayerObject;
+    private final GamePlayer gamePlayerObject;
 
     public StageEventDispatcher(GamePlayer owner){
         this.gamePlayerObject = owner;
