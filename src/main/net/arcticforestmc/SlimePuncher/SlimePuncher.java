@@ -10,6 +10,7 @@ import net.arcticforestmc.SlimePuncher.Commands.SetMobsAlive;
 import net.arcticforestmc.SlimePuncher.Commands.Test;
 import net.arcticforestmc.SlimePuncher.Commands.DisableGamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.GamePlayerManager;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
@@ -54,20 +55,18 @@ public class SlimePuncher extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new GamePlayerManager(this), this);
         
         worldEdit = WorldEdit.getInstance();
-        //This is in onEnable()
+
         gamePlayerHandler();
     }
 
     public void gamePlayerHandler(){
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (GamePlayer gp :
-                        GamePlayerManager.gamePlayers.values()) {
-                    gp.gameTick();
-                }
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            for (GamePlayer gp :
+                    GamePlayerManager.gamePlayers.values()) {
+                gp.gameTick();
             }
-        }.runTaskTimer(this, 1, 1);
+        }, 1L, 1L);
+
     }
 
     @Override
