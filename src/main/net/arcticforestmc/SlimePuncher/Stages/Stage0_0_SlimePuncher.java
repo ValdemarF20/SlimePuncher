@@ -15,10 +15,9 @@ import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-import java.util.HashMap;
 import java.util.SplittableRandom;
-import java.util.UUID;
 
 public class Stage0_0_SlimePuncher extends Stage {
     private final EntityHider entityHider;
@@ -146,6 +145,8 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     public void shooterZombie(Zombie zombie){
         Player target = gamePlayerObject.getOwner();
+        if (target == null) return;
+
         int customSpeed = 3;
         ItemStack slimeBall = new ItemStack(Material.SLIME_BALL);
 
@@ -158,18 +159,30 @@ public class Stage0_0_SlimePuncher extends Stage {
             public void run() {
                 if(!(zombie.isDead())) {
                     Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                    entityHider.hideEntity(target, arrow);
+                    //entityHider.hideEntity(target, arrow);
 
                     ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
 
-                    armorStand.setVisible(false);
+                    armorStand.setVisible(true);
                     armorStand.setItemInHand(slimeBall);
+                    armorStand.setGravity(false);
 
-                    arrow.addPassenger(armorStand);
                     arrow.setSilent(true);
+
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (arrow.isDead()) {
+                                this.cancel();
+                                armorStand.remove();
+                            } else {
+                                armorStand.teleport(arrow.getLocation().subtract((arrow.getVelocity().normalize().multiply(0.5).subtract(new Vector(0, 1, 0)))));
+                            }
+                        }
+                    }.runTaskTimer(plugin, 1, 1); //
                 }
             }
-        }.runTaskTimer(plugin, 50, 50);
+        }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
     }
 
     @Override

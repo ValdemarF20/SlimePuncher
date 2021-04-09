@@ -4,7 +4,6 @@ package net.arcticforestmc.SlimePuncher;
 import com.sk89q.worldedit.WorldEdit;
 
 import net.arcticforestmc.SlimePuncher.Base.EntityHider;
-import net.arcticforestmc.SlimePuncher.Base.StageTree;
 import net.arcticforestmc.SlimePuncher.Commands.EnableGamePlayer;
 import net.arcticforestmc.SlimePuncher.Commands.SetMobsAlive;
 import net.arcticforestmc.SlimePuncher.Commands.Test;
@@ -15,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.DataManager;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import static net.arcticforestmc.SlimePuncher.Base.EntityHider.Policy.BLACKLIST;
 
@@ -32,8 +30,6 @@ public class SlimePuncher extends JavaPlugin {
     protected EntityHider entityHider;
 
     protected GamePlayerManager gamePlayerManager;
-
-    protected StageTree stageTree;
 
     //SIZE OF ARENAS:
     public static int sizeX = 100;
