@@ -61,9 +61,9 @@ public class Stage0_0_SlimePuncher extends Stage {
         Location blockLocation = clickedBlock.getLocation();
 
         //Requires configuration
-        int slimeBlockRelativeX = 0;
-        int slimeBlockRelativeY = 10;
-        int slimeBlockRelativeZ = 0;
+        int slimeBlockRelativeX = 38;
+        int slimeBlockRelativeY = 7;
+        int slimeBlockRelativeZ = 38;
 
         Location slimeLocation = new Location(player.getWorld(), gamePlayerObject.getArenaXTile() + slimeBlockRelativeX, slimeBlockRelativeY, gamePlayerObject.getStageZTile() + slimeBlockRelativeZ);
 

@@ -1,7 +1,15 @@
 main: net.arcticforestmc.SlimePuncher.SlimePuncher
 name: "SlimePuncher"
 version: 0.0.0-ALPHA
-authors: ["Connor Michalec", ""]
+authors: ["Connor Michalec", "Valdemar Foster"]
 commands:
   testdingdong:
-depends: ["WorldEdit"]
+  test:
+    description: Gets the amount of bits the player has.
+  disablegameplayer:
+  enablegameplayer:
+  setmobsalive:
+
+  mobsAlive:
+    description: Gets the amount of zombies alive.
+depends: ["WorldEdit", "ProtocolLib"]
