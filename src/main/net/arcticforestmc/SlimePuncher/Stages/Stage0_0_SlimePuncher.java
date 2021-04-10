@@ -17,11 +17,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.SplittableRandom;
 
 public class Stage0_0_SlimePuncher extends Stage {
     private final EntityHider entityHider;
     private static final SplittableRandom SPLITTABLE_RANDOM = new SplittableRandom();
+    private final ArrayList<Zombie> mobsAliveList = new ArrayList<>();
+    private Location prevArrowLocation;
+    private Location newArrowLocation;
 
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
@@ -86,7 +90,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     public static int mobsAlive = 0;
     private void spawnEnemyTick() {
 
-        if(!(mobsAlive < 5)) return;
+        if(!(mobsAliveList.isEmpty())) return;
 
         final float circleRadians = (float) (2.0F*Math.PI); //Radians in a circle idk google: https://socratic.org/questions/how-do-you-convert-360-degrees-to-radianss
 
@@ -108,8 +112,10 @@ public class Stage0_0_SlimePuncher extends Stage {
 
                         if(mobsAlive < 5) {
                             Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
+                            zombie.setBaby(false);
                             applyAttributes(zombie);
                             mobsAlive++;
+                            mobsAliveList.add(zombie);
                         }
                     }
                 }
@@ -180,7 +186,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                                 armorStand.teleport(arrow.getLocation().subtract((arrow.getVelocity().normalize().multiply(0.5).subtract(new Vector(0, 1, 0)))));
                             }
                         }
-                    }.runTaskTimer(plugin, 1, 1); //
+                    }.runTaskTimer(plugin, 1, 1);
                 }
             }
         }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
@@ -188,10 +194,9 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     @Override
     public void onEntityDeathEvent(EntityDeathEvent e){
-
-        System.out.println("Inside EntityDeathEvent");
-
         Entity entity = e.getEntity();
+        if(!(entity instanceof Zombie)) return;
+
         double entityLocationX = entity.getLocation().getX();
         double entityLocationZ = entity.getLocation().getZ();
         EntityDamageEvent damageEvent = entity.getLastDamageCause();
@@ -200,8 +205,9 @@ public class Stage0_0_SlimePuncher extends Stage {
         if(!(entityLocationX < gamePlayerObject.getArenaXTile() + SlimePuncher.sizeX) && !(entityLocationX > gamePlayerObject.getArenaXTile())) return;
         if(!(entityLocationZ < gamePlayerObject.getArenaXTile() + SlimePuncher.sizeZ) && !(entityLocationZ > gamePlayerObject.getArenaXTile())) return;
 
-        if(entity.getType() == EntityType.ZOMBIE) {
+        if(mobsAliveList.contains(entity)) {
             mobsAlive -= 1;
+            mobsAliveList.remove(entity);
 
             if (damageEvent.getCause() == (EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
                 gamePlayerObject.addBits(1);
@@ -222,6 +228,15 @@ public class Stage0_0_SlimePuncher extends Stage {
     public int[][][] nextStageTunnelRelativeBounds() {
         //1 tunnel because only 1 next stage.
         return new int[][][]{{{0,0},{0,0}}};
+    }
+
+    public boolean isMoving(){
+        new BukkitRunnable(){
+            @Override
+            public void run(){
+
+            }
+        }.runTaskTimer(plugin, 1, 10);
     }
 
     public void setMobsAlive(int i){
