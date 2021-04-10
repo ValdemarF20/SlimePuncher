@@ -42,6 +42,9 @@ public class SlimePuncher extends JavaPlugin {
         entityHider = new EntityHider(this, BLACKLIST);
         gamePlayerManager = new GamePlayerManager(this);
 
+        yamlDataHandler.createDirectoryIfMissing("plugins/SlimePuncher");
+        yamlDataHandler.createDirectoryIfMissing("plugins/SlimePuncher/stageSchematics");
+
 
         this.getCommand("test").setExecutor(new Test());
         this.getCommand("disablegameplayer").setExecutor(new DisableGamePlayer(this));
