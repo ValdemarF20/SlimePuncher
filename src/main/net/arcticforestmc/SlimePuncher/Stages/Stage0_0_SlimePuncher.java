@@ -166,6 +166,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     armorStand.setVisible(true);
                     armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
+                    armorStand.setInvulnerable(true);
 
                     arrow.setSilent(true);
 
