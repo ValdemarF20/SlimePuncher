@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
+import net.arcticforestmc.SlimePuncher.Managers.StageGeneration;
 import net.arcticforestmc.SlimePuncher.Stages.Stage;
 
 
@@ -42,6 +43,8 @@ public class GamePlayer implements Listener{
             stageTree = new StageTree(plugin, this, "0_0");
             //new player so set new arenaXTile
             arenaXTile = getNewPlayerXArenaLocation();
+            ///Generate the first stage
+            StageGeneration.generateStage(this, "0_0", arenaXTile, 0, getStageZTile());
         }
 
     }

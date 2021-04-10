@@ -1,7 +1,6 @@
 package net.arcticforestmc.SlimePuncher;
 
 
-import com.sk89q.worldedit.WorldEdit;
 
 import net.arcticforestmc.SlimePuncher.Base.EntityHider;
 import net.arcticforestmc.SlimePuncher.Commands.EnableGamePlayer;
@@ -16,6 +15,8 @@ import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.DataManager;
 
 import static net.arcticforestmc.SlimePuncher.Base.EntityHider.Policy.BLACKLIST;
+
+import com.sk89q.worldedit.WorldEdit;
 
 public class SlimePuncher extends JavaPlugin {
 
