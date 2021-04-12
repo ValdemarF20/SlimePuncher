@@ -242,4 +242,9 @@ public class Stage0_0_SlimePuncher extends Stage {
     public void setMobsAlive(int i){
         mobsAlive = i;
     }
+
+    @Override
+    public int[] npcStageRelativeCoords() {
+        return new int[]{0,0,0};
+    }
 }

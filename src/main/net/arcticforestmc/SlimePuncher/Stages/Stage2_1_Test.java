@@ -41,4 +41,9 @@ public class Stage2_1_Test extends Stage {
     public int[][][] nextStageTunnelRelativeBounds() {
         return new int[][][]{{{}}};
     }
+
+    @Override
+    public int[] npcStageRelativeCoords() {
+        return new int[]{0,0,0};
+    }
 }

@@ -98,6 +98,13 @@ public abstract class Stage {
      */
     public abstract int[][][] nextStageTunnelRelativeBounds();
 
+    /**
+     * This defines the relative location for the stage's NPC shop guy
+     * @return Array of relative XYZ of shop npc
+     */
+    public abstract int[] npcStageRelativeCoords();
+    
+
 
     //EVENTS:
 
