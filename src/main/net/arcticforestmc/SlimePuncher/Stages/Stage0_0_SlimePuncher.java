@@ -179,7 +179,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (arrow.isDead()) {
+                            if (arrow.isDead() || !(arrow.isValid())) {
                                 this.cancel();
                                 armorStand.remove();
                             } else {
@@ -229,14 +229,15 @@ public class Stage0_0_SlimePuncher extends Stage {
         //1 tunnel because only 1 next stage.
         return new int[][][]{{{0,0},{0,0}}};
     }
-
+    private boolean isMovingBoolean;
     public boolean isMoving(){
         new BukkitRunnable(){
             @Override
             public void run(){
-
+                isMovingBoolean = true;
             }
         }.runTaskTimer(plugin, 1, 10);
+        return isMovingBoolean;
     }
 
     public void setMobsAlive(int i){
