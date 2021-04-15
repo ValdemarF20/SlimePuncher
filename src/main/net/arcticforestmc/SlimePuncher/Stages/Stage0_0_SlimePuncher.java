@@ -66,10 +66,9 @@ public class Stage0_0_SlimePuncher extends Stage {
 
         //Requires configuration
         int slimeBlockRelativeX = 38;
-        int slimeBlockRelativeY = 7;
         int slimeBlockRelativeZ = 38;
 
-        Location slimeLocation = new Location(player.getWorld(), gamePlayerObject.getArenaXTile() + slimeBlockRelativeX, slimeBlockRelativeY, gamePlayerObject.getStageZTile() + slimeBlockRelativeZ);
+        Location slimeLocation = new Location(player.getWorld(), gamePlayerObject.getArenaXTile() + slimeBlockRelativeX, gamePlayerObject.getArenaYLevel()+1, gamePlayerObject.getStageZTile() + slimeBlockRelativeZ);
 
         if (blockLocation.equals(slimeLocation)) {
 
@@ -96,7 +95,7 @@ public class Stage0_0_SlimePuncher extends Stage {
 
         //requires configuration
         int arenaFloorRelativeX = 38;       //arenaFloorRelative decides where the mobs are spawning
-        int arenaFloorRelativeY = 6;
+        int arenaFloorRelativeY = gamePlayerObject.getArenaYLevel();
         int arenaFloorRelativeZ = 38;
         float radius = 10;                  //radius in blocks
         float stepSize = 1 / radius;        //size of each step <- multiplicative inverse
@@ -175,18 +174,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     armorStand.setMarker(true);
 
                     arrow.setSilent(true);
-
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            if (arrow.isDead()) {
-                                this.cancel();
-                                armorStand.remove();
-                            } else {
-                                armorStand.teleport(arrow.getLocation().subtract((arrow.getVelocity().normalize().multiply(0.5).subtract(new Vector(0, 1, 0)))));
-                            }
-                        }
-                    }.runTaskTimer(plugin, 1, 1);
+                    arrow.addPassenger(armorStand);
                 }
             }
         }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
@@ -227,7 +215,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     @Override
     public int[][][] nextStageTunnelRelativeBounds() {
         //1 tunnel because only 1 next stage.
-        return new int[][][]{{{0,0},{0,0}}};
+        return new int[][][]{{{20,10},{50,40}}};
     }
 
     public boolean isMoving(){
@@ -237,6 +225,8 @@ public class Stage0_0_SlimePuncher extends Stage {
 
             }
         }.runTaskTimer(plugin, 1, 10);
+
+        return(false);
     }
 
     public void setMobsAlive(int i){

@@ -3,11 +3,13 @@ package net.arcticforestmc.SlimePuncher.Base;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
-
+import org.bukkit.Location;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
+import net.arcticforestmc.SlimePuncher.Managers.StageGeneration;
 import net.arcticforestmc.SlimePuncher.Stages.*;
 
 
@@ -63,6 +65,11 @@ public class StageTree implements Listener{
             
             //Registers the events
             plugin.getServer().getPluginManager().registerEvents(new StageEventDispatcher(gamePlayerObject), plugin);
+
+            //Start tunnel stage bounds detection for next stages
+            nextStageBoundsDetection(plugin, gamePlayerObject);
+
+            //progressTracking(0, gamePlayerObject);
         }
         
         /**
@@ -73,6 +80,38 @@ public class StageTree implements Listener{
         for(Stage stage : stages) {
             stage.gameTick();
         }
+    }
+
+    public void nextStageBoundsDetection(JavaPlugin plugin, GamePlayer player) {
+         new BukkitRunnable() {
+             @Override
+             public void run() {
+                //every tick detect if the player is going in a tunnel, if he is then progress to next stage and do appropriate animations and stuff
+
+                int[][][] tunnels = getTracking().nextStageTunnelRelativeBounds();
+
+                ArrayList<Location[]> tunnelsData = new ArrayList();
+
+                for(int[][] tunnel : tunnels) {
+                    int tunnelPoints[][] = new int[2][3];
+                    for(int tunnelPointIndex = 0; tunnelPointIndex < tunnel.length; tunnelPointIndex++) {
+                        int[] tunnelPoint = tunnel[tunnelPointIndex];
+                        tunnelPoints[tunnelPointIndex] = tunnelPoint;
+                    }
+                    //construct data for 1 tunnel:
+                    Location pointData[] = new Location[2];
+                    //point 1 of rect:
+                    pointData[0] = new Location(player.getOwner().getWorld(), player.getArenaXTile()+tunnelPoints[0][0], player.getArenaYLevel(), player.getStageZTile()+tunnelPoints[0][1]);
+                    //point 2 of rect:
+                    pointData[1] = new Location(player.getOwner().getWorld(), player.getArenaXTile()+tunnelPoints[1][0], player.getArenaYLevel(), player.getStageZTile()+tunnelPoints[1][1]);
+                    
+                    tunnelsData.add(pointData);
+                }
+             }
+         }.runTaskTimer(plugin, 0, 0);
+
+
+
     }
 
 
@@ -100,7 +139,13 @@ public class StageTree implements Listener{
      * Use this when the player should progress, this will interface with stage generation, once this method is triggered a wall will be closed behind the player, the stage generator will create the next stage, and the wall to the next stage will be opened.
      * @param childStage this is the child stage number that the player chose.
      */
-    public void progressTracking(int childStage) {
+    public void progressTracking(int childStage, GamePlayer player) {
+        String id = trackingStage.getStageIdentifier()[0]+"_"+childStage;
+        //String id = trackingStage.getStageIdentifier()[0]+1+"_"+childStage;
+
+        setTracking(getStageFromIdentifier(id));
+        
+        StageGeneration.generateStage(player, id, player.getArenaXTile(), player.getArenaYLevel(), player.getStageZTile());
 
     }
 

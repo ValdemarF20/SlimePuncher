@@ -132,6 +132,14 @@ public class GamePlayer implements Listener{
     }
 
     /**
+     * Return y level of where the arenas are constructed
+     * @return
+     */
+    public int getArenaYLevel() {
+		return(6);
+	}
+
+    /**
      * Get level of player, NOT the level of the stage the player is on, this is calculated based on xpBits
      * @return
      */
@@ -154,4 +162,6 @@ public class GamePlayer implements Listener{
     public int getXpBits() {
         return(xpBits);
     }
+
+
 }
