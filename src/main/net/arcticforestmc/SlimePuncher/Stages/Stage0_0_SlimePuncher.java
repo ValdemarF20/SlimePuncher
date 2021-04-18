@@ -120,7 +120,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     }
                 }
             }
-        }.runTaskLater(plugin, 300);
+        }.runTaskLater(plugin, 15 * 20);
     }
 
     public void applyAttributes(Zombie zombie){
@@ -165,11 +165,11 @@ public class Stage0_0_SlimePuncher extends Stage {
             public void run() {
                 if(!(zombie.isDead())) {
                     Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                    //entityHider.hideEntity(target, arrow);
+                    entityHider.hideEntity(target, arrow);
 
                     ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
 
-                    armorStand.setVisible(true);
+                    armorStand.setVisible(false);
                     armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
                     armorStand.setMarker(true);
@@ -221,8 +221,6 @@ public class Stage0_0_SlimePuncher extends Stage {
         // TODO Auto-generated method stub
         spawnEnemyTick();
     }
-
-
 
     @Override
     public int[][][] nextStageTunnelRelativeBounds() {
