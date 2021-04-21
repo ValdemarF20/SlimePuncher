@@ -24,14 +24,14 @@ public class Stage0_0_SlimePuncher extends Stage {
     private final EntityHider entityHider;
     private static final SplittableRandom SPLITTABLE_RANDOM = new SplittableRandom();
     private final ArrayList<Zombie> mobsAliveList = new ArrayList<>();
-    private Location prevArrowLocation;
-    private Location newArrowLocation;
 
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
         this.entityHider = plugin.getEntityHider();
         //TODO Auto-generated constructor stub
     }
+
+    private Location prevArrowLocation = new Location(gamePlayerObject.getOwner().getWorld(), 0, 0, 0);
 
     @Override
     public int[] getStageIdentifier() {
@@ -104,22 +104,32 @@ public class Stage0_0_SlimePuncher extends Stage {
         new BukkitRunnable(){
             @Override
             public void run() {
-                for(double step = 0; step<circleRadians; step+=stepSize) {
-                    if(Math.round(Math.random() * 50) == 1) {
-                        int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
-                        int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
+                if(!(mobsAlive <= 0)) return;
+                final boolean[] mobsAreSpawning = {true};
+                new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        if(!(mobsAreSpawning[0])) return;
+                        for(double step = 0; step<circleRadians; step+=stepSize) {
+                            if(SPLITTABLE_RANDOM.nextInt(1, 50) == 1) {
+                                int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
+                                int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
 
-                        if(mobsAlive < 5) {
-                            Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
-                            zombie.setBaby(false);
-                            applyAttributes(zombie);
-                            mobsAlive++;
-                            mobsAliveList.add(zombie);
+                                if(mobsAlive < 5) {
+                                    Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
+                                    zombie.setBaby(false);
+                                    applyAttributes(zombie);
+                                    mobsAlive++;
+                                    mobsAliveList.add(zombie);
+                                }
+                            }
                         }
+                        mobsAreSpawning[0] = false;
                     }
-                }
+                }.runTaskLater(plugin, SPLITTABLE_RANDOM.nextInt(5, 15) * 20); //Spawns zombies after 5-15 seconds
+
             }
-        }.runTaskLater(plugin, 15 * 20);
+        }.runTaskTimer(plugin, 1, 20); //Runs if there's 0 or less mobs alive (every 20 ticks)
     }
 
     public void applyAttributes(Zombie zombie){
@@ -178,16 +188,15 @@ public class Stage0_0_SlimePuncher extends Stage {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (arrow.isDead() || !(arrow.isValid())) {
-                                this.cancel();
+                            if (arrow.isDead() || !(isMoving(arrow.getLocation()))) {
                                 armorStand.remove();
+                                this.cancel();
+                                return;
                             } else {
-                                //armorStand.teleport(arrow.getLocation().subtract((arrow.getVelocity().normalize().multiply(0.5).subtract(new Vector(0, 1, 0)))));
+                                armorStand.teleport(arrow.getLocation().subtract((arrow.getVelocity().normalize().multiply(0.5).subtract(new Vector(0, 1, 0)))));
                             }
                         }
                     }.runTaskTimer(plugin, 1, 1);
-
-                    arrow.addPassenger(armorStand);
                 }
             }
         }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
@@ -228,14 +237,17 @@ public class Stage0_0_SlimePuncher extends Stage {
         //1 tunnel because only 1 next stage.
         return new int[][][]{{{20,10},{50,40}}};
     }
-    private boolean isMovingBoolean;
-    public boolean isMoving(){
-        new BukkitRunnable(){
-            @Override
-            public void run(){
-                isMovingBoolean = true;
-            }
-        }.runTaskTimer(plugin, 1, 10);
+
+    public boolean isMoving(Location current){
+        boolean isMovingBoolean;
+
+        if(prevArrowLocation.equals(current)){
+            isMovingBoolean = false;
+        } else{
+            isMovingBoolean = true;
+            prevArrowLocation = current;
+        }
+
         return isMovingBoolean;
     }
 
