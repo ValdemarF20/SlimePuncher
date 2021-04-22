@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
+import net.arcticforestmc.SlimePuncher.Stages.Stage0_0_SlimePuncher;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,6 +33,9 @@ public class GamePlayerManager implements Listener {
             GamePlayer obj = new GamePlayer(player, slimePuncher);
             gamePlayers.put(player.getUniqueId(), obj);
 
+            Stage0_0_SlimePuncher stage0_0 = (Stage0_0_SlimePuncher) obj.getStageTree().getStageFromIdentifier("0_0");
+            stage0_0.spawnEnemies();
+            System.out.println("Enemies have been spawned");
         }
     }
 

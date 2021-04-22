@@ -9,6 +9,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
@@ -24,11 +25,16 @@ public class Stage0_0_SlimePuncher extends Stage {
     private final EntityHider entityHider;
     private static final SplittableRandom SPLITTABLE_RANDOM = new SplittableRandom();
     private final ArrayList<Zombie> mobsAliveList = new ArrayList<>();
+    public static final boolean[] mobsAreSpawning = {false};
 
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
         this.entityHider = plugin.getEntityHider();
         //TODO Auto-generated constructor stub
+    }
+
+    public static boolean[] getMobsAreSpawning() {
+        return mobsAreSpawning;
     }
 
     private Location prevArrowLocation = new Location(gamePlayerObject.getOwner().getWorld(), 0, 0, 0);
@@ -87,8 +93,24 @@ public class Stage0_0_SlimePuncher extends Stage {
      * Go around the arena edge once and spawn enemies randomly
      */
     public static int mobsAlive = 0;
-    private void spawnEnemyTick() {
+    /*
+    private void spawnEnemiesIfNotSpawning(){
+        if(!(mobsAreSpawning[0])){
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if(!(mobsAreSpawning[0])){
+                        spawnEnemies();
+                    }
+                }
+            }.runTaskLater(plugin, 500);
+        }
+    }
 
+     */
+
+    public void spawnEnemies() {
+        System.out.println("Debug 2");
         if(!(mobsAliveList.isEmpty())) return;
 
         final float circleRadians = (float) (2.0F*Math.PI); //Radians in a circle idk google: https://socratic.org/questions/how-do-you-convert-360-degrees-to-radianss
@@ -101,35 +123,19 @@ public class Stage0_0_SlimePuncher extends Stage {
         float stepSize = 1 / radius;        //size of each step <- multiplicative inverse
         World world = gamePlayerObject.getOwner().getWorld();
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                if(!(mobsAlive <= 0)) return;
-                final boolean[] mobsAreSpawning = {true};
-                new BukkitRunnable(){
-                    @Override
-                    public void run() {
-                        if(!(mobsAreSpawning[0])) return;
-                        for(double step = 0; step<circleRadians; step+=stepSize) {
-                            if(SPLITTABLE_RANDOM.nextInt(1, 50) == 1) {
-                                int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
-                                int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
-
-                                if(mobsAlive < 5) {
-                                    Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
-                                    zombie.setBaby(false);
-                                    applyAttributes(zombie);
-                                    mobsAlive++;
-                                    mobsAliveList.add(zombie);
-                                }
-                            }
-                        }
-                        mobsAreSpawning[0] = false;
-                    }
-                }.runTaskLater(plugin, SPLITTABLE_RANDOM.nextInt(5, 15) * 20); //Spawns zombies after 5-15 seconds
-
+        for (double step = 0; step < circleRadians; step += stepSize) {
+            if (SPLITTABLE_RANDOM.nextInt(1, 35) == 1) {
+                int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
+                int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
+                if (mobsAlive < 5) {
+                    Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
+                    zombie.setBaby(false);
+                    applyAttributes(zombie);
+                    mobsAlive++;
+                    mobsAliveList.add(zombie);
+                }
             }
-        }.runTaskTimer(plugin, 1, 20); //Runs if there's 0 or less mobs alive (every 20 ticks)
+        }
     }
 
     public void applyAttributes(Zombie zombie){
@@ -188,8 +194,9 @@ public class Stage0_0_SlimePuncher extends Stage {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (arrow.isDead() || !(isMoving(arrow.getLocation()))) {
+                            if (!(isMoving(arrow.getLocation()))) {
                                 armorStand.remove();
+                                arrow.remove();
                                 this.cancel();
                                 return;
                             } else {
@@ -218,10 +225,20 @@ public class Stage0_0_SlimePuncher extends Stage {
         if(mobsAliveList.contains(entity)) {
             mobsAlive -= 1;
             mobsAliveList.remove(entity);
+            System.out.println("Inside death event");
 
             if (damageEvent.getCause() == (EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
                 gamePlayerObject.addBits(1);
                 gamePlayerObject.addXpBits(1);
+            }
+            if(mobsAliveList.size() <= 0) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        spawnEnemies();
+                        mobsAreSpawning[0] = true;
+                    }
+                }.runTaskLater(plugin, 300);
             }
         }
     }
@@ -229,7 +246,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     @Override
     public void gameTick() {
         // TODO Auto-generated method stub
-        spawnEnemyTick();
+        //spawnEnemiesIfNotSpawning();
     }
 
     @Override
@@ -241,12 +258,16 @@ public class Stage0_0_SlimePuncher extends Stage {
     public boolean isMoving(Location current){
         boolean isMovingBoolean;
 
-        if(prevArrowLocation.equals(current)){
-            isMovingBoolean = false;
-        } else{
-            isMovingBoolean = true;
-            prevArrowLocation = current;
-        }
+        double currentX = current.getX();
+        double currentY = current.getY();
+        double currentZ = current.getZ();
+
+        double prevX = prevArrowLocation.getX();
+        double prevY = prevArrowLocation.getY();
+        double prevZ = prevArrowLocation.getZ();
+
+        isMovingBoolean = currentX != prevX && currentZ != prevZ;
+        prevArrowLocation = current;
 
         return isMovingBoolean;
     }

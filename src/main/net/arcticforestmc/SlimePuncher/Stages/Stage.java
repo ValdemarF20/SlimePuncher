@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public abstract class Stage {
 

@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -39,6 +40,9 @@ public class Test implements CommandExecutor {
 
             player.sendMessage(String.valueOf(gamePlayers.size()));
         }
+
+        //Are mobs spawning?
+        System.out.println(Arrays.toString(Stage0_0_SlimePuncher.getMobsAreSpawning()));
 
         return true;
     }
