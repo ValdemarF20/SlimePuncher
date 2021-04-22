@@ -44,7 +44,11 @@ public class GamePlayer implements Listener{
             //new player so set new arenaXTile
             arenaXTile = getNewPlayerXArenaLocation();
             ///Generate the first stage
-            StageGeneration.generateStage(this, "0_0", arenaXTile, 0, getStageZTile());
+            StageGeneration.generateStage(this, "0_0", arenaXTile, getArenaYLevel(), getStageZTile());
+
+
+            //TEST:
+            //stageTree.progressTracking(0, this);
         }
 
     }
