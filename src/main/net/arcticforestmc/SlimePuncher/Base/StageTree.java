@@ -66,10 +66,9 @@ public class StageTree implements Listener{
             //Registers the events
             plugin.getServer().getPluginManager().registerEvents(new StageEventDispatcher(gamePlayerObject), plugin);
 
-            //Start tunnel stage bounds detection for next stages
+            //Start tunnel stage bounds detection for next stages after construction(because this object needs to be made for it to work, otherwise null loop)
             nextStageBoundsDetection(plugin, gamePlayerObject);
 
-            //progressTracking(0, gamePlayerObject);
         }
         
         /**
@@ -102,13 +101,14 @@ public class StageTree implements Listener{
                     Location pointData[] = new Location[2];
                     //point 1 of rect:
                     pointData[0] = new Location(player.getOwner().getWorld(), player.getArenaXTile()+tunnelPoints[0][0], player.getArenaYLevel(), player.getStageZTile()+tunnelPoints[0][1]);
+
                     //point 2 of rect:
                     pointData[1] = new Location(player.getOwner().getWorld(), player.getArenaXTile()+tunnelPoints[1][0], player.getArenaYLevel(), player.getStageZTile()+tunnelPoints[1][1]);
                     
                     tunnelsData.add(pointData);
                 }
              }
-         }.runTaskTimer(plugin, 0, 0);
+         }.runTaskTimer(plugin, 1, 0);
 
 
 
@@ -140,8 +140,7 @@ public class StageTree implements Listener{
      * @param childStage this is the child stage number that the player chose.
      */
     public void progressTracking(int childStage, GamePlayer player) {
-        String id = trackingStage.getStageIdentifier()[0]+"_"+childStage;
-        //String id = trackingStage.getStageIdentifier()[0]+1+"_"+childStage;
+        String id = trackingStage.getStageIdentifier()[0]+1+"_"+childStage;
 
         setTracking(getStageFromIdentifier(id));
         
