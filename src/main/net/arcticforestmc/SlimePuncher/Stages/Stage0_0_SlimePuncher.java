@@ -9,7 +9,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
@@ -93,32 +92,16 @@ public class Stage0_0_SlimePuncher extends Stage {
      * Go around the arena edge once and spawn enemies randomly
      */
     public static int mobsAlive = 0;
-    /*
-    private void spawnEnemiesIfNotSpawning(){
-        if(!(mobsAreSpawning[0])){
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if(!(mobsAreSpawning[0])){
-                        spawnEnemies();
-                    }
-                }
-            }.runTaskLater(plugin, 500);
-        }
-    }
-
-     */
 
     public void spawnEnemies() {
-        System.out.println("Debug 2");
         if(!(mobsAliveList.isEmpty())) return;
 
         final float circleRadians = (float) (2.0F*Math.PI); //Radians in a circle idk google: https://socratic.org/questions/how-do-you-convert-360-degrees-to-radianss
 
         //requires configuration
-        int arenaFloorRelativeX = 38;       //arenaFloorRelative decides where the mobs are spawning
-        int arenaFloorRelativeY = gamePlayerObject.getArenaYLevel();
-        int arenaFloorRelativeZ = 38;
+        int arenaFloorRelativeX = gamePlayerObject.getArenaXTile() + 38;       //arenaFloorRelative decides where the mobs are spawning
+        int arenaFloorRelativeY = gamePlayerObject.getArenaYLevel() + 1;
+        int arenaFloorRelativeZ = gamePlayerObject.getStageZTile() + 38;
         float radius = 10;                  //radius in blocks
         float stepSize = 1 / radius;        //size of each step <- multiplicative inverse
         World world = gamePlayerObject.getOwner().getWorld();
@@ -195,8 +178,8 @@ public class Stage0_0_SlimePuncher extends Stage {
                         @Override
                         public void run() {
                             if (!(isMoving(arrow.getLocation()))) {
-                                armorStand.remove();
                                 arrow.remove();
+                                armorStand.remove();
                                 this.cancel();
                                 return;
                             } else {
