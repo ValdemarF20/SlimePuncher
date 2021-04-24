@@ -182,11 +182,11 @@ public class Stage0_0_SlimePuncher extends Stage {
                                 armorStand.remove();
                                 this.cancel();
                                 return;
-                            } else {
-                                armorStand.teleport(arrow.getLocation().subtract((arrow.getVelocity().normalize().multiply(0.5).subtract(new Vector(0, 1, 0)))));
                             }
                         }
                     }.runTaskTimer(plugin, 1, 1);
+
+                    arrow.addPassenger(armorStand);
                 }
             }
         }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
