@@ -180,30 +180,17 @@ public class Stage0_0_SlimePuncher extends Stage {
             public void run() {
                 if(!(zombie.isDead())) {
                     Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                    entityHider.hideEntity(target, arrow);
+                    //entityHider.hideEntity(target, arrow);
 
                     ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
 
-                    armorStand.setVisible(false);
+                    armorStand.setVisible(true);
                     armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
-                    armorStand.setMarker(true);
+                    armorStand.setMarker(false);
 
                     arrow.setSilent(true);
-
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            if (!(isMoving(arrow.getLocation()))) {
-                                armorStand.remove();
-                                arrow.remove();
-                                this.cancel();
-                                return;
-                            } else {
-                                armorStand.teleport(arrow.getLocation().subtract((arrow.getVelocity().normalize().multiply(0.5).subtract(new Vector(0, 1, 0)))));
-                            }
-                        }
-                    }.runTaskTimer(plugin, 1, 1);
+                    arrow.addPassenger(armorStand);
                 }
             }
         }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
