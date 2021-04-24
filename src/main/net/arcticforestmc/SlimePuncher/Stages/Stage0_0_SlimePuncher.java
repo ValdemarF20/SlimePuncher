@@ -184,10 +184,10 @@ public class Stage0_0_SlimePuncher extends Stage {
 
                     ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
 
-                    armorStand.setVisible(true);
+                    armorStand.setVisible(false);
                     armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
-                    armorStand.setMarker(false);
+                    armorStand.setMarker(true);
 
                     arrow.setSilent(true);
                     arrow.addPassenger(armorStand);
