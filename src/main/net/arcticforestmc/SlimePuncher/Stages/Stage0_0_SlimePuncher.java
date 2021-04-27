@@ -1,34 +1,36 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
-import net.arcticforestmc.SlimePuncher.Base.EntityHider;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import net.arcticforestmc.SlimePuncher.SlimePuncher;
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutEntityDestroy;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.SplittableRandom;
 
 public class Stage0_0_SlimePuncher extends Stage {
-    private final EntityHider entityHider;
     private static final SplittableRandom SPLITTABLE_RANDOM = new SplittableRandom();
     private final ArrayList<Zombie> mobsAliveList = new ArrayList<>();
     public static final boolean[] mobsAreSpawning = {false};
 
     public Stage0_0_SlimePuncher(SlimePuncher slimePuncher, GamePlayer owner) {
         super(slimePuncher, owner);
-        this.entityHider = plugin.getEntityHider();
         //TODO Auto-generated constructor stub
     }
 
@@ -94,6 +96,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     public static int mobsAlive = 0;
 
     public void spawnEnemies() {
+
         if(!(mobsAliveList.isEmpty())) return;
 
         final float circleRadians = (float) (2.0F*Math.PI); //Radians in a circle idk google: https://socratic.org/questions/how-do-you-convert-360-degrees-to-radianss
@@ -112,6 +115,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                 int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
                 if (mobsAlive < 5) {
                     Zombie zombie = (Zombie) world.spawnEntity(new Location(world, x, arenaFloorRelativeY, z), EntityType.ZOMBIE);
+                    zombie.getEquipment().setHelmet(new ItemStack(Material.STONE_BUTTON)); //quick and dirty way to prevent zombies from burning
                     zombie.setBaby(false);
                     applyAttributes(zombie);
                     mobsAlive++;
@@ -151,7 +155,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         Player target = gamePlayerObject.getOwner();
         if (target == null) return;
 
-        int customSpeed = 3;
+        int customSpeed = 2;
         ItemStack slimeBall = new ItemStack(Material.SLIME_BALL);
 
 
@@ -162,9 +166,8 @@ public class Stage0_0_SlimePuncher extends Stage {
             @Override
             public void run() {
                 if(!(zombie.isDead())) {
+                    //Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
                     Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                    entityHider.hideEntity(target, arrow);
-
                     ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
 
                     armorStand.setVisible(false);
@@ -172,24 +175,49 @@ public class Stage0_0_SlimePuncher extends Stage {
                     armorStand.setGravity(false);
                     armorStand.setMarker(true);
 
+                    //rotate slime
+                    armorStand.setHeadPose(new EulerAngle(0.0D, 0.0D, 0.0D));
+
                     arrow.setSilent(true);
 
+                    //Trick client into thinking arrow is dead
+                    ((CraftPlayer) target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(arrow.getEntityId()));
+
+//
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (!(isMoving(arrow.getLocation()))) {
-                                arrow.remove();
+                            if(!isMoving(arrow.getLocation())) {
                                 armorStand.remove();
+                                arrow.remove();
                                 this.cancel();
                                 return;
                             }
+                            armorStand.teleport(adjustedArmorStandLocation(arrow.getLocation()));
                         }
-                    }.runTaskTimer(plugin, 1, 1);
+                    }.runTaskTimer(plugin, 1, 0);
 
-                    arrow.addPassenger(armorStand);
                 }
             }
         }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
+    }
+
+    private Location adjustedArmorStandLocation(Location in) {
+        //position armor stand so it looks like slime ball is traveling
+        Location location = in;
+
+        location.setY(location.getY()-2.5);
+
+        return(location);
+    }
+
+    @Override
+    public void onProjectileHitEvent(ProjectileHitEvent e) {
+        if(e.getEntityType().equals(EntityType.ARROW)) {
+            if(isInStage(e.getEntity().getLocation())) {
+                e.getEntity().remove();
+            }
+        }
     }
 
     @Override
@@ -230,6 +258,37 @@ public class Stage0_0_SlimePuncher extends Stage {
     public void gameTick() {
         // TODO Auto-generated method stub
         //spawnEnemiesIfNotSpawning();
+        Player player = gamePlayerObject.getOwner();
+        for(Arrow arrow : arrowsInStage(player)) {
+            player.spawnParticle(Particle.SLIME, arrow.getLocation(), 2, 0.01, 0.01 ,0.01, 0.01);
+        }
+    }
+
+    private ArrayList<Arrow> arrowsInStage(Player player) {
+        ArrayList<Arrow> arrows = new ArrayList();
+        for(Entity e : player.getWorld().getEntities()) {
+            if(e.getType().equals(EntityType.ARROW)) {
+                Location l = e.getLocation();
+                if(isInStage(l)) {
+                    arrows.add((Arrow) e);
+                }
+                
+            }
+        }
+
+        return(arrows);
+    }
+
+    private boolean isInStage(Location location) {
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+        if(x>gamePlayerObject.getArenaXTile() && x<gamePlayerObject.getArenaXTile()+SlimePuncher.sizeX) {
+            if(z>gamePlayerObject.getStageZTile() && z<gamePlayerObject.getStageZTile()+SlimePuncher.sizeZ) {
+                return(true);
+            }
+        }
+        return(false);
     }
 
     @Override
@@ -263,4 +322,5 @@ public class Stage0_0_SlimePuncher extends Stage {
     public int[] npcStageRelativeCoords() {
         return new int[]{0,0,0};
     }
+
 }
