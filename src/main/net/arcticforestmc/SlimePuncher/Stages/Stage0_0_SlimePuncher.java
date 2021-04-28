@@ -107,7 +107,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         World world = gamePlayerObject.getOwner().getWorld();
 
         for (double step = 0; step < circleRadians; step += stepSize) {
-            if (SPLITTABLE_RANDOM.nextInt(1, 35) == 1) {
+            if (SPLITTABLE_RANDOM.nextInt(1, 25) == 1) {
                 int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
                 int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
                 if (mobsAlive < 5) {
@@ -163,7 +163,7 @@ public class Stage0_0_SlimePuncher extends Stage {
             public void run() {
                 if(!(zombie.isDead())) {
                     Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
-                    entityHider.hideEntity(target, arrow);
+                    //entityHider.hideEntity(target, arrow);
 
                     ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
 
@@ -171,6 +171,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
                     armorStand.setMarker(true);
+                    armorStand.setInvulnerable(true);
 
                     arrow.setSilent(true);
 
@@ -181,7 +182,6 @@ public class Stage0_0_SlimePuncher extends Stage {
                                 arrow.remove();
                                 armorStand.remove();
                                 this.cancel();
-                                return;
                             }
                         }
                     }.runTaskTimer(plugin, 1, 1);
@@ -214,12 +214,11 @@ public class Stage0_0_SlimePuncher extends Stage {
                 gamePlayerObject.addBits(1);
                 gamePlayerObject.addXpBits(1);
             }
-            if(mobsAliveList.size() <= 0) {
+            if(mobsAliveList.isEmpty()) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         spawnEnemies();
-                        mobsAreSpawning[0] = true;
                     }
                 }.runTaskLater(plugin, 300);
             }
