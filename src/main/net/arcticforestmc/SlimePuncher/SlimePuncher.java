@@ -2,7 +2,6 @@ package net.arcticforestmc.SlimePuncher;
 
 
 
-import net.arcticforestmc.SlimePuncher.Base.EntityHider;
 import net.arcticforestmc.SlimePuncher.Commands.EnableGamePlayer;
 import net.arcticforestmc.SlimePuncher.Commands.SetMobsAlive;
 import net.arcticforestmc.SlimePuncher.Commands.Test;
@@ -13,8 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.DataManager;
-
-import static net.arcticforestmc.SlimePuncher.Base.EntityHider.Policy.BLACKLIST;
 
 import com.sk89q.worldedit.WorldEdit;
 
@@ -28,19 +25,17 @@ public class SlimePuncher extends JavaPlugin {
 
     public GamePlayer test;
 
-    protected EntityHider entityHider;
 
     protected GamePlayerManager gamePlayerManager;
 
     //SIZE OF ARENAS:
-    public static int sizeX = 100;
-    public static int sizeZ = 100;
+    public static int sizeX = 75;
+    public static int sizeZ = 75;
 
     @Override
     public void onEnable() {
         yamlDataHandler = new YamlDataHandler(this);
         dataManager = new DataManager(this);
-        entityHider = new EntityHider(this, BLACKLIST);
         gamePlayerManager = new GamePlayerManager(this);
 
         yamlDataHandler.createDirectoryIfMissing("plugins/SlimePuncher");
@@ -74,7 +69,4 @@ public class SlimePuncher extends JavaPlugin {
         //dataManager.update();
     }
 
-    public EntityHider getEntityHider(){
-        return entityHider;
-    }
 }
