@@ -17,12 +17,14 @@ import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityDestroy;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.SplittableRandom;
+import java.util.UUID;
 
 public class Stage0_0_SlimePuncher extends Stage {
     private static final SplittableRandom SPLITTABLE_RANDOM = new SplittableRandom();
@@ -152,6 +154,15 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     public void shooterZombie(Zombie zombie){
+        UUID uuid = UUID.fromString("d9316bb7-755b-4141-a4c9-c6958d9047f6");
+        OfflinePlayer slimeHeadPlayer = plugin.getServer().getOfflinePlayer(uuid);
+
+        ItemStack playerHead = new ItemStack(Material.SKULL);
+        SkullMeta slimeHead = (SkullMeta) playerHead.getItemMeta();
+        slimeHead.setOwningPlayer(slimeHeadPlayer);
+
+        playerHead.setItemMeta(slimeHead);
+
         Player target = gamePlayerObject.getOwner();
         if (target == null) return;
 
@@ -174,6 +185,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
                     armorStand.setMarker(true);
+                    armorStand.setHelmet(playerHead);
 
                     //rotate slime
                     armorStand.setHeadPose(new EulerAngle(0.0D, 0.0D, 0.0D));
