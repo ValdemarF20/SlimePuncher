@@ -1,5 +1,7 @@
 package net.arcticforestmc.SlimePuncher.Stages;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -22,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.SplittableRandom;
 import java.util.UUID;
@@ -154,14 +157,21 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     public void shooterZombie(Zombie zombie){
-        UUID uuid = UUID.fromString("d9316bb7-755b-4141-a4c9-c6958d9047f6");
-        OfflinePlayer slimeHeadPlayer = plugin.getServer().getOfflinePlayer(uuid);
+        UUID uuid = UUID.randomUUID();
+        String base64_value = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0=";
+        GameProfile profile = new GameProfile(/*uuid=*/uuid, /*name=*/"slimeHead");
+        profile.getProperties().put("textures", new Property("textures", base64_value));
 
-        ItemStack playerHead = new ItemStack(Material.SKULL);
-        SkullMeta slimeHead = (SkullMeta) playerHead.getItemMeta();
-        slimeHead.setOwningPlayer(slimeHeadPlayer);
+        ItemStack headItem = new ItemStack(Material.SKULL);
+        SkullMeta meta = (SkullMeta) headItem.getItemMeta();
 
-        playerHead.setItemMeta(slimeHead);
+        try{
+            Field fieldProfileItem = meta.getClass().getDeclaredField("slimeHead");
+            fieldProfileItem.setAccessible(true);
+            fieldProfileItem.set(meta, profile);
+        }
+        catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e){e.printStackTrace();}
+        headItem.setItemMeta(meta);
 
         Player target = gamePlayerObject.getOwner();
         if (target == null) return;
@@ -185,7 +195,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
                     armorStand.setMarker(true);
-                    armorStand.setHelmet(playerHead);
+                    armorStand.setHelmet(headItem);
 
                     //rotate slime
                     armorStand.setHeadPose(new EulerAngle(0.0D, 0.0D, 0.0D));
