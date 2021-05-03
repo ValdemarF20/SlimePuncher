@@ -162,7 +162,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         GameProfile profile = new GameProfile(/*uuid=*/uuid, /*name=*/"slimeHead");
         profile.getProperties().put("textures", new Property("textures", base64_value));
 
-        ItemStack headItem = new ItemStack(Material.SKULL);
+        ItemStack headItem = new ItemStack(Material.SKULL_ITEM);
         SkullMeta meta = (SkullMeta) headItem.getItemMeta();
 
         try{
