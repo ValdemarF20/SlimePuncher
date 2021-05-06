@@ -53,7 +53,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     @Override
     public void ownerJoinedArena() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -184,7 +184,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     //Trick client into thinking arrow is dead
                     ((CraftPlayer) target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(arrow.getEntityId()));
 
-//
+
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -271,7 +271,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                 if(isInStage(l)) {
                     arrows.add((Arrow) e);
                 }
-                
+
             }
         }
 
