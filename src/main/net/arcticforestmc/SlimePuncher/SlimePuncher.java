@@ -10,6 +10,8 @@ import net.arcticforestmc.SlimePuncher.Managers.GamePlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import michalec.connor.ArcticStatsAPI.ArcticStatsAPI;
+
 import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.DataManager;
 
@@ -20,6 +22,8 @@ public class SlimePuncher extends JavaPlugin {
     public static YamlDataHandler yamlDataHandler;
 
     public static DataManager dataManager;
+
+    public static ArcticStatsAPI statsAPI;
 
     public static WorldEdit worldEdit;
 
@@ -37,6 +41,7 @@ public class SlimePuncher extends JavaPlugin {
         yamlDataHandler = new YamlDataHandler(this);
         dataManager = new DataManager(this);
         gamePlayerManager = new GamePlayerManager(this);
+        //statsAPI = new ArcticStatsAPI("");
 
         yamlDataHandler.createDirectoryIfMissing("plugins/SlimePuncher");
         yamlDataHandler.createDirectoryIfMissing("plugins/SlimePuncher/stageSchematics");

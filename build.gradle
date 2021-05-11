@@ -17,6 +17,10 @@ repositories {
     maven {
          url "https://repo.dmulloy2.net/repository/public/" 
     }
+    flatDir {
+        dirs 'lib'
+    }
+
 }
 
 sourceSets {
@@ -48,6 +52,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:3.8.0'
     implementation group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.6.0";
+    implementation 'michalec.connor.ArcitcStatsAPI:ArcticStatsAPI:0.2.0-BETA'
 }
 
 tasks.register("build_connor", Copy) {
