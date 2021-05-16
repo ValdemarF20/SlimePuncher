@@ -35,7 +35,7 @@ public class DataManager {
     private final JavaPlugin plugin;
 
     public DataManager(JavaPlugin plugin) {
-        operation = SlimePuncher.statsAPI.makeOperation("SlimePuncher");
+        // operation = SlimePuncher.statsAPI.makeOperation("SlimePuncher");
 
         this.plugin = plugin;
         updateSchedule();
