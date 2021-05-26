@@ -19,6 +19,7 @@ import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityDestroy;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
@@ -157,29 +158,16 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     public void shooterZombie(Zombie zombie){
-        UUID uuid = UUID.randomUUID();
-        String base64_value = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0=";
-        GameProfile profile = new GameProfile(/*uuid=*/uuid, /*name=*/"slimeHead");
-        profile.getProperties().put("textures", new Property("textures", base64_value));
-
-        ItemStack headItem = new ItemStack(Material.SKULL_ITEM);
-        SkullMeta meta = (SkullMeta) headItem.getItemMeta();
-
-        try{
-            Field fieldProfileItem = meta.getClass().getDeclaredField("slimeHead");
-            fieldProfileItem.setAccessible(true);
-            fieldProfileItem.set(meta, profile);
-        }
-        catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e){e.printStackTrace();}
-        headItem.setItemMeta(meta);
-
         Player target = gamePlayerObject.getOwner();
         if (target == null) return;
 
+        //Arrow speed
         int customSpeed = 2;
+
+        //Flying object on arrow
         ItemStack slimeBall = new ItemStack(Material.SLIME_BALL);
 
-
+        //General attributes for the shooterZombie
         zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
         zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
 
@@ -192,13 +180,14 @@ public class Stage0_0_SlimePuncher extends Stage {
                     ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
 
                     armorStand.setVisible(false);
-                    armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
                     armorStand.setMarker(true);
 
                     armorStand.setInvulnerable(true);
 
-                    armorStand.setHelmet(headItem);
+                    //Create the skull for the armor stand head
+                    String base64_value = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0=";
+                    armorStand.setHelmet(makeTextureSkull(base64_value));
 
                     //rotate slime
                     armorStand.setHeadPose(new EulerAngle(0.0D, 0.0D, 0.0D));
@@ -208,7 +197,7 @@ public class Stage0_0_SlimePuncher extends Stage {
                     //Trick client into thinking arrow is dead
                     ((CraftPlayer) target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(arrow.getEntityId()));
 
-
+                    //Remove arrow + armorstand if arrow is not moving
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -219,11 +208,11 @@ public class Stage0_0_SlimePuncher extends Stage {
                             }
                             armorStand.teleport(adjustedArmorStandLocation(arrow.getLocation()));
                         }
-                    }.runTaskTimer(plugin, 1, 0);
+                    }.runTaskTimer(plugin, 1, 5);
 
                 }
             }
-        }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
+        }.runTaskTimer(plugin, 50, 80); //Fire arrow every 50 ticks
     }
 
     private Location adjustedArmorStandLocation(Location in) {
@@ -235,6 +224,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         return(location);
     }
 
+    /*
     @Override
     public void onProjectileHitEvent(ProjectileHitEvent e) {
         if(e.getEntityType().equals(EntityType.ARROW)) {
@@ -243,6 +233,7 @@ public class Stage0_0_SlimePuncher extends Stage {
             }
         }
     }
+     */
 
     @Override
     public void onEntityDeathEvent(EntityDeathEvent e){
@@ -346,4 +337,27 @@ public class Stage0_0_SlimePuncher extends Stage {
         return new int[]{0,0,0};
     }
 
+    public static ItemStack makeTextureSkull(String code){
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte)3);
+        if(code == null) return item;
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+
+        GameProfile profile = new GameProfile(UUID.nameUUIDFromBytes(code.getBytes()), code);
+        profile.getProperties().put("textures", new Property("textures", code));
+
+        setGameProfile(meta, profile);
+
+        meta.setDisplayName(ChatColor.WHITE+"UNKNOWN Head");
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static void setGameProfile(ItemMeta meta, GameProfile profile){
+        try{
+            Field fieldProfileItem = meta.getClass().getDeclaredField("profile");
+            fieldProfileItem.setAccessible(true);
+            fieldProfileItem.set(meta, profile);
+        }
+        catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e){e.printStackTrace();}
+    }
 }

@@ -46,8 +46,8 @@ public class SlimePuncher extends JavaPlugin {
         yamlDataHandler.createDirectoryIfMissing("plugins/SlimePuncher");
         yamlDataHandler.createDirectoryIfMissing("plugins/SlimePuncher/stageSchematics");
 
-
-        this.getCommand("test").setExecutor(new Test());
+        //Just a test
+        getCommand("test").setExecutor(new Test());
         this.getCommand("disablegameplayer").setExecutor(new DisableGamePlayer(this));
         this.getCommand("enablegameplayer").setExecutor(new EnableGamePlayer(this));
         this.getCommand("setmobsalive").setExecutor(new SetMobsAlive());

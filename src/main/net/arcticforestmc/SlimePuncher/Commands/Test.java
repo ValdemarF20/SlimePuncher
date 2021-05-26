@@ -25,6 +25,7 @@ public class Test implements CommandExecutor {
         //The amount of bits the player has
         String bits = String.valueOf(gamePlayer.getBits());
         gamePlayer.getOwner().sendMessage("Bits: " + bits);
+        player.sendMessage("Bits: " + bits);
 
         //Current amount of mobs alive
         gamePlayer.getOwner().sendMessage("Mobs alive: " + Stage0_0_SlimePuncher.mobsAlive);
