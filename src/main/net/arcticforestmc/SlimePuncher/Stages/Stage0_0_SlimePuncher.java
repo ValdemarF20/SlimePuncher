@@ -10,7 +10,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -23,7 +22,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -201,7 +199,8 @@ public class Stage0_0_SlimePuncher extends Stage {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if(!isMoving(arrow.getLocation())) {
+
+                            if(!(isMoving(arrow.getLocation()) || arrow.isDead())) {
                                 armorStand.remove();
                                 arrow.remove();
                                 this.cancel();
@@ -322,7 +321,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         double prevY = prevArrowLocation.getY();
         double prevZ = prevArrowLocation.getZ();
 
-        isMovingBoolean = currentX != prevX && currentZ != prevZ;
+        isMovingBoolean = (Math.abs(prevX - currentX) < 0.5) && (Math.abs(prevZ - currentZ) < 0.5);
         prevArrowLocation = current;
 
         return isMovingBoolean;
