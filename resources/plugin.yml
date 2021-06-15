@@ -13,3 +13,5 @@ commands:
   mobsAlive:
     description: Gets the amount of zombies alive.
 depend: ["WorldEdit", "ProtocolLib", "ArcticStatsAPI"]
+
+softdepend: [HolographicDisplays]

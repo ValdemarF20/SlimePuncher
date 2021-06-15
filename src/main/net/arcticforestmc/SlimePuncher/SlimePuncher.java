@@ -16,6 +16,7 @@ import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.arcticforestmc.SlimePuncher.Managers.DataManager;
 
 import com.sk89q.worldedit.WorldEdit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class SlimePuncher extends JavaPlugin {
 
@@ -38,6 +39,14 @@ public class SlimePuncher extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        //Check if HolographicDisplays is enabled
+        if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
+            getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
+            getLogger().severe("*** This plugin will be disabled. ***");
+            this.setEnabled(false);
+            return;
+        }
+
         yamlDataHandler = new YamlDataHandler(this);
         dataManager = new DataManager(this);
         gamePlayerManager = new GamePlayerManager(this);
@@ -66,7 +75,6 @@ public class SlimePuncher extends JavaPlugin {
                 gp.gameTick();
             }
         }, 1L, 1L);
-
     }
 
     @Override

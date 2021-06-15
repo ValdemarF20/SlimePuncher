@@ -162,9 +162,6 @@ public class Stage0_0_SlimePuncher extends Stage {
         //Arrow speed
         int customSpeed = 2;
 
-        //Flying object on arrow
-        ItemStack slimeBall = new ItemStack(Material.SLIME_BALL);
-
         //General attributes for the shooterZombie
         zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
         zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
@@ -216,23 +213,10 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     private Location adjustedArmorStandLocation(Location in) {
         //position armor stand so it looks like slime ball is traveling
-        Location location = in;
+        in.setY(in.getY()-2.5);
 
-        location.setY(location.getY()-2.5);
-
-        return(location);
+        return(in);
     }
-
-    /*
-    @Override
-    public void onProjectileHitEvent(ProjectileHitEvent e) {
-        if(e.getEntityType().equals(EntityType.ARROW)) {
-            if(isInStage(e.getEntity().getLocation())) {
-                e.getEntity().remove();
-            }
-        }
-    }
-     */
 
     @Override
     public void onEntityDeathEvent(EntityDeathEvent e){
@@ -278,7 +262,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     private ArrayList<Arrow> arrowsInStage(Player player) {
-        ArrayList<Arrow> arrows = new ArrayList();
+        ArrayList<Arrow> arrows = new ArrayList<>();
         for(Entity e : player.getWorld().getEntities()) {
             if(e.getType().equals(EntityType.ARROW)) {
                 Location l = e.getLocation();
@@ -294,12 +278,9 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     private boolean isInStage(Location location) {
         int x = location.getBlockX();
-        int y = location.getBlockY();
         int z = location.getBlockZ();
-        if(x>gamePlayerObject.getArenaXTile() && x<gamePlayerObject.getArenaXTile()+SlimePuncher.sizeX) {
-            if(z>gamePlayerObject.getStageZTile() && z<gamePlayerObject.getStageZTile()+SlimePuncher.sizeZ) {
-                return(true);
-            }
+        if(x > gamePlayerObject.getArenaXTile() && x < gamePlayerObject.getArenaXTile() + SlimePuncher.sizeX) {
+            return z > gamePlayerObject.getStageZTile() && z < gamePlayerObject.getStageZTile() + SlimePuncher.sizeZ;
         }
         return(false);
     }
@@ -314,11 +295,9 @@ public class Stage0_0_SlimePuncher extends Stage {
         boolean isMovingBoolean;
 
         double currentX = current.getX();
-        double currentY = current.getY();
         double currentZ = current.getZ();
 
         double prevX = prevArrowLocation.getX();
-        double prevY = prevArrowLocation.getY();
         double prevZ = prevArrowLocation.getZ();
 
         isMovingBoolean = (Math.abs(prevX - currentX) < 0.5) && (Math.abs(prevZ - currentZ) < 0.5);
