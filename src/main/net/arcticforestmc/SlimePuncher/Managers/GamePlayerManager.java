@@ -35,7 +35,6 @@ public class GamePlayerManager implements Listener {
 
             Stage0_0_SlimePuncher stage0_0 = (Stage0_0_SlimePuncher) obj.getStageTree().getStageFromIdentifier("0_0");
             stage0_0.spawnEnemies();
-            System.out.println("Enemies have been spawned");
         }
     }
 

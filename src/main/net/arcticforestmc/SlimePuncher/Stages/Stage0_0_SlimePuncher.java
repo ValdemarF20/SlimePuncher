@@ -157,6 +157,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     public void shooterZombie(Zombie zombie){
+
         UUID uuid = UUID.randomUUID();
         String base64_value = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0=";
         GameProfile profile = new GameProfile(/*uuid=*/uuid, /*name=*/"slimeHead");

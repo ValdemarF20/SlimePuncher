@@ -6,9 +6,12 @@ plugins {
 
 repositories {
     mavenLocal()
-    jcenter()
+    mavenCentral()
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/public/'
     }
     maven {
         name = 'enginehub-maven'
@@ -71,6 +74,13 @@ tasks.register("build_vald", Copy) {
         into "C:\\Users\\Valdemar\\Desktop\\mc\\Testing Server\\plugins"
 }
 
+tasks.register("build_vald_two", Copy) {
+    dependsOn tasks.build
+
+    from jar.archiveFile
+    into "C:\\Users\\45512\\Desktop\\JAVA\\plugins"
+}
+
 group = 'net.arcticforestmc.SlimePuncher'
 version = '0.0.0-ALPHA-SNAPSHOT'
 sourceCompatibility = 1.8
@@ -84,3 +94,8 @@ configure(build_vald) {
     group = 'SlimePuncher'
     description = 'Build and export jar'
 }
+configure(build_vald_two) {
+    group = 'SlimePuncher'
+    description = 'Build and export jar'
+}
+

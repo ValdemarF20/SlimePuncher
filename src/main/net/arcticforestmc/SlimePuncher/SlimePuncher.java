@@ -66,7 +66,6 @@ public class SlimePuncher extends JavaPlugin {
                 gp.gameTick();
             }
         }, 1L, 1L);
-
     }
 
     @Override
