@@ -55,7 +55,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:3.8.0'
     implementation group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.6.0";
-    implementation 'michalec.connor.ArcitcStatsAPI:ArcticStatsAPI:0.3.1-BETA'
+    implementation 'michalec.connor.ArcticStatsAPI:ArcticStatsAPI:0.3.1-BETA'
 }
 
 tasks.register("build_connor", Copy) {
@@ -71,7 +71,7 @@ tasks.register("build_vald", Copy) {
     dependsOn tasks.build
 
         from jar.archiveFile
-        into "C:\\Users\\Valdemar\\Desktop\\mc\\Testing Server\\plugins"
+        into "C:\\Users\\Valdemar\\Desktop\\mc\\Plugins"
 }
 
 tasks.register("build_vald_two", Copy) {

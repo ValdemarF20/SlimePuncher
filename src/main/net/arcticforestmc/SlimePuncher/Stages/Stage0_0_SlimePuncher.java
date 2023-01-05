@@ -10,7 +10,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -19,10 +18,10 @@ import net.arcticforestmc.SlimePuncher.Base.GamePlayer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityDestroy;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class Stage0_0_SlimePuncher extends Stage {
     @Override
     public void ownerJoinedArena() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -115,7 +114,7 @@ public class Stage0_0_SlimePuncher extends Stage {
         World world = gamePlayerObject.getOwner().getWorld();
 
         for (double step = 0; step < circleRadians; step += stepSize) {
-            if (SPLITTABLE_RANDOM.nextInt(1, 35) == 1) {
+            if (SPLITTABLE_RANDOM.nextInt(1, 25) == 1) {
                 int x = (int) Math.round(Math.cos(step) * radius) + gamePlayerObject.getArenaXTile() + arenaFloorRelativeX;
                 int z = (int) Math.round(Math.sin(step) * radius) + gamePlayerObject.getStageZTile() + arenaFloorRelativeZ;
                 if (mobsAlive < 5) {
@@ -157,30 +156,13 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     public void shooterZombie(Zombie zombie){
-
-        UUID uuid = UUID.randomUUID();
-        String base64_value = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0=";
-        GameProfile profile = new GameProfile(/*uuid=*/uuid, /*name=*/"slimeHead");
-        profile.getProperties().put("textures", new Property("textures", base64_value));
-
-        ItemStack headItem = new ItemStack(Material.SKULL_ITEM);
-        SkullMeta meta = (SkullMeta) headItem.getItemMeta();
-
-        try{
-            Field fieldProfileItem = meta.getClass().getDeclaredField("slimeHead");
-            fieldProfileItem.setAccessible(true);
-            fieldProfileItem.set(meta, profile);
-        }
-        catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e){e.printStackTrace();}
-        headItem.setItemMeta(meta);
-
         Player target = gamePlayerObject.getOwner();
         if (target == null) return;
 
+        //Arrow speed
         int customSpeed = 2;
-        ItemStack slimeBall = new ItemStack(Material.SLIME_BALL);
 
-
+        //General attributes for the shooterZombie
         zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1);
         zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
 
@@ -188,15 +170,19 @@ public class Stage0_0_SlimePuncher extends Stage {
             @Override
             public void run() {
                 if(!(zombie.isDead())) {
-                    //Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
                     Arrow arrow = zombie.launchProjectile(Arrow.class, ((target.getLocation().toVector().add(target.getVelocity())).subtract(zombie.getLocation().toVector())).normalize().multiply(customSpeed));
+
                     ArmorStand armorStand = (ArmorStand) arrow.getWorld().spawnEntity(arrow.getLocation(), EntityType.ARMOR_STAND);
 
                     armorStand.setVisible(false);
-                    armorStand.setItemInHand(slimeBall);
                     armorStand.setGravity(false);
                     armorStand.setMarker(true);
-                    armorStand.setHelmet(headItem);
+
+                    armorStand.setInvulnerable(true);
+
+                    //Create the skull for the armor stand head
+                    String base64_value = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0=";
+                    armorStand.setHelmet(makeTextureSkull(base64_value));
 
                     //rotate slime
                     armorStand.setHeadPose(new EulerAngle(0.0D, 0.0D, 0.0D));
@@ -206,41 +192,30 @@ public class Stage0_0_SlimePuncher extends Stage {
                     //Trick client into thinking arrow is dead
                     ((CraftPlayer) target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(arrow.getEntityId()));
 
-//
+                    //Remove arrow + armorstand if arrow is not moving
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if(!isMoving(arrow.getLocation())) {
+
+                            if(!(isMoving(arrow.getLocation()) || arrow.isDead())) {
                                 armorStand.remove();
                                 arrow.remove();
                                 this.cancel();
-                                return;
                             }
                             armorStand.teleport(adjustedArmorStandLocation(arrow.getLocation()));
                         }
-                    }.runTaskTimer(plugin, 1, 0);
+                    }.runTaskTimer(plugin, 1, 5);
 
                 }
             }
-        }.runTaskTimer(plugin, 50, 50); //Fire arrow every 50 ticks
+        }.runTaskTimer(plugin, 50, 80); //Fire arrow every 50 ticks
     }
 
     private Location adjustedArmorStandLocation(Location in) {
         //position armor stand so it looks like slime ball is traveling
-        Location location = in;
+        in.setY(in.getY()-2.5);
 
-        location.setY(location.getY()-2.5);
-
-        return(location);
-    }
-
-    @Override
-    public void onProjectileHitEvent(ProjectileHitEvent e) {
-        if(e.getEntityType().equals(EntityType.ARROW)) {
-            if(isInStage(e.getEntity().getLocation())) {
-                e.getEntity().remove();
-            }
-        }
+        return(in);
     }
 
     @Override
@@ -265,12 +240,11 @@ public class Stage0_0_SlimePuncher extends Stage {
                 gamePlayerObject.addBits(1);
                 gamePlayerObject.addXpBits(1);
             }
-            if(mobsAliveList.size() <= 0) {
+            if(mobsAliveList.isEmpty()) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         spawnEnemies();
-                        mobsAreSpawning[0] = true;
                     }
                 }.runTaskLater(plugin, 300);
             }
@@ -288,14 +262,14 @@ public class Stage0_0_SlimePuncher extends Stage {
     }
 
     private ArrayList<Arrow> arrowsInStage(Player player) {
-        ArrayList<Arrow> arrows = new ArrayList();
+        ArrayList<Arrow> arrows = new ArrayList<>();
         for(Entity e : player.getWorld().getEntities()) {
             if(e.getType().equals(EntityType.ARROW)) {
                 Location l = e.getLocation();
                 if(isInStage(l)) {
                     arrows.add((Arrow) e);
                 }
-                
+
             }
         }
 
@@ -304,12 +278,9 @@ public class Stage0_0_SlimePuncher extends Stage {
 
     private boolean isInStage(Location location) {
         int x = location.getBlockX();
-        int y = location.getBlockY();
         int z = location.getBlockZ();
-        if(x>gamePlayerObject.getArenaXTile() && x<gamePlayerObject.getArenaXTile()+SlimePuncher.sizeX) {
-            if(z>gamePlayerObject.getStageZTile() && z<gamePlayerObject.getStageZTile()+SlimePuncher.sizeZ) {
-                return(true);
-            }
+        if(x > gamePlayerObject.getArenaXTile() && x < gamePlayerObject.getArenaXTile() + SlimePuncher.sizeX) {
+            return z > gamePlayerObject.getStageZTile() && z < gamePlayerObject.getStageZTile() + SlimePuncher.sizeZ;
         }
         return(false);
     }
@@ -324,14 +295,12 @@ public class Stage0_0_SlimePuncher extends Stage {
         boolean isMovingBoolean;
 
         double currentX = current.getX();
-        double currentY = current.getY();
         double currentZ = current.getZ();
 
         double prevX = prevArrowLocation.getX();
-        double prevY = prevArrowLocation.getY();
         double prevZ = prevArrowLocation.getZ();
 
-        isMovingBoolean = currentX != prevX && currentZ != prevZ;
+        isMovingBoolean = (Math.abs(prevX - currentX) < 0.5) && (Math.abs(prevZ - currentZ) < 0.5);
         prevArrowLocation = current;
 
         return isMovingBoolean;
@@ -346,4 +315,27 @@ public class Stage0_0_SlimePuncher extends Stage {
         return new int[]{0,0,0};
     }
 
+    public static ItemStack makeTextureSkull(String code){
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte)3);
+        if(code == null) return item;
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+
+        GameProfile profile = new GameProfile(UUID.nameUUIDFromBytes(code.getBytes()), code);
+        profile.getProperties().put("textures", new Property("textures", code));
+
+        setGameProfile(meta, profile);
+
+        meta.setDisplayName(ChatColor.WHITE+"UNKNOWN Head");
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static void setGameProfile(ItemMeta meta, GameProfile profile){
+        try{
+            Field fieldProfileItem = meta.getClass().getDeclaredField("profile");
+            fieldProfileItem.setAccessible(true);
+            fieldProfileItem.set(meta, profile);
+        }
+        catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e){e.printStackTrace();}
+    }
 }
